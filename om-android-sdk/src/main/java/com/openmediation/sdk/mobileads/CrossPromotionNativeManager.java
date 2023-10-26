@@ -43,14 +43,14 @@ public class CrossPromotionNativeManager {
         if (extras.containsKey(PAY_LOAD)) {
             payload = extras.get(PAY_LOAD).toString();
         }
-        if (TextUtils.isEmpty(payload)) {
-            AdLog.getSingleton().LogD(TAG, "NativeAd load failed: payload is empty");
-            if (callback != null) {
-                callback.onNativeAdLoadFailed(AdapterErrorBuilder.buildLoadError(
-                        AdapterErrorBuilder.AD_UNIT_NATIVE, "CrossPromotionAdapter", "payload is empty"));
-            }
-            return;
-        }
+        // if (TextUtils.isEmpty(payload)) {
+        //     AdLog.getSingleton().LogD(TAG, "NativeAd load failed: payload is empty");
+        //     if (callback != null) {
+        //         callback.onNativeAdLoadFailed(AdapterErrorBuilder.buildLoadError(
+        //                 AdapterErrorBuilder.AD_UNIT_NATIVE, "CrossPromotionAdapter", "payload is empty"));
+        //     }
+        //     return;
+        // }
         NativeAd nativeAd = new NativeAd(MediationUtil.getContext(), adUnitId);
         InnerNativeAdListener listener = new InnerNativeAdListener(nativeAd, adUnitId, callback);
         nativeAd.setAdListener(listener);

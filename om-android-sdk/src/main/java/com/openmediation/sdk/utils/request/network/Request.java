@@ -9,6 +9,7 @@ import android.text.TextUtils;
 
 import com.openmediation.sdk.utils.error.ErrorCode;
 import com.openmediation.sdk.utils.IOUtil;
+import com.openmediation.sdk.utils.DeveloperLog;
 
 /**
  * The type Request.
@@ -214,7 +215,9 @@ public class Request {
             @Override
             public void onSuccess(Response response) {
                 if (mCallback != null) {
+                    
                     mCallback.onRequestSuccess(response);
+
                 } else {
                     IOUtil.closeQuietly(response);
                 }

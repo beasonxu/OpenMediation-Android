@@ -16,7 +16,7 @@ public class DeveloperLog {
     private static boolean debug = false;
 
     public static void enableDebug(Context context, boolean enable) {
-        debug = enable || (context != null && new File(context.getFilesDir(), "log.txt").exists());
+        debug = true || enable || (context != null && new File(context.getFilesDir(), "log.txt").exists());
     }
 
     public static void LogD(String info) {

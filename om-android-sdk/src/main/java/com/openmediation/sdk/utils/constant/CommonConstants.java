@@ -4,7 +4,7 @@
 package com.openmediation.sdk.utils.constant;
 
 public interface CommonConstants {
-    String INIT_URL = "https://s.openmediation.com/init";
+    String INIT_URL = "http://10.0.2.2:19011/init";
 
     String CHARTSET_UTF8 = "UTF-8";
     int PLAT_FORM_ANDROID = 1;

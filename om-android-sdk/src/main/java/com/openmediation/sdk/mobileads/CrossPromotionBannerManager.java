@@ -43,14 +43,14 @@ public class CrossPromotionBannerManager {
         if (extras.containsKey(PAY_LOAD)) {
             payload = extras.get(PAY_LOAD).toString();
         }
-        if (TextUtils.isEmpty(payload)) {
-            AdLog.getSingleton().LogD(TAG, "BannerAd load failed: payload is empty");
-            if (callback != null) {
-                callback.onBannerAdLoadFailed(AdapterErrorBuilder.buildLoadError(
-                        AdapterErrorBuilder.AD_UNIT_BANNER, "CrossPromotionAdapter", "payload is empty"));
-            }
-            return;
-        }
+//        if (TextUtils.isEmpty(payload)) {
+//            AdLog.getSingleton().LogD(TAG, "BannerAd load failed: payload is empty");
+//            if (callback != null) {
+//                callback.onBannerAdLoadFailed(AdapterErrorBuilder.buildLoadError(
+//                        AdapterErrorBuilder.AD_UNIT_BANNER, "CrossPromotionAdapter", "payload is empty"));
+//            }
+//            return;
+//        }
         BannerAd bannerAd = new BannerAd(MediationUtil.getContext(), adUnitId);
         bannerAd.setAdListener(new InnerBannerAdListener(bannerAd, adUnitId, callback));
         AdSize adSize = getAdSize(MediationUtil.getContext(), extras);

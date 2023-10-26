@@ -419,6 +419,7 @@ public final class InitImp {
                     callbackInitErrorOnUIThread(mCallback, error);
                     return;
                 }
+                DeveloperLog.LogD("Om init response data: " + responseData);
                 parseConfigData(configuration, responseData, false, mCallback);
                 OmCacheManager.getInstance().saveInitData(configuration, responseData);
             } catch (Throwable e) {

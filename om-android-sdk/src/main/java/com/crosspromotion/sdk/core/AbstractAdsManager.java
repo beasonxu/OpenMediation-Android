@@ -172,7 +172,9 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
                 onAdsLoadFailed(error);
                 return;
             }
-            JSONObject jsonObject = new JSONObject(response.body().string());
+            String responseString = response.body().string();
+            DeveloperLog.LogD("onRequestSuccess : " + responseString);
+            JSONObject jsonObject = new JSONObject(responseString);
             JSONArray campaigns = jsonObject.optJSONArray("campaigns");
             if (campaigns == null || campaigns.length() <= 0) {
                 Error error = ErrorBuilder.build(ErrorCode.CODE_LOAD_NO_FILL);

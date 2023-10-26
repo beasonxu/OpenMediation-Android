@@ -53,9 +53,15 @@ public class BaseWebView extends android.webkit.WebView {
         this.setInitialScale(0);
 
         String cacheDirPath = getContext().getFilesDir().getAbsolutePath() + "cache/";
-        settings.setAppCachePath(cacheDirPath);
-        settings.setAppCacheMaxSize(20 * 1024 * 1024L);
-        settings.setAppCacheEnabled(true);
+        if (Build.VERSION.SDK_INT >= 33)  {
+            settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
+        } else {
+//            settings.setAppCachePath(cacheDirPath);
+//            settings.setAppCacheMaxSize(20 * 1024 * 1024L);
+//            settings.setAppCacheEnabled(true);
+        }
+
         settings.setDatabasePath(cacheDirPath);
         settings.setDatabaseEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);

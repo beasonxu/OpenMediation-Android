@@ -21,7 +21,7 @@ public class AppApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-//        initSDK();
+        initSDK();
         AppsFlyerLib.getInstance().init("Your AF Key", new AppsFlyerConversionListener() {
             @Override
             public void onConversionDataSuccess(Map<String, Object> map) {

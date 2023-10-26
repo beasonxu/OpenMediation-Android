@@ -568,6 +568,7 @@ public abstract class AbstractAdsApi implements InitCallback, BidResponseCallbac
                 return;
             }
             String responseString = response.body().string();
+            DeveloperLog.LogD("onRequestSuccess : " + responseString);
             // save wf data
             OmCacheManager.getInstance().saveWaterfallData(mPlacement.getId(), mPlacement.getT(), responseString);
             if (mReadWfFromLocal) {
