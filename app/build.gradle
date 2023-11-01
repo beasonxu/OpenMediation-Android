@@ -41,9 +41,9 @@ dependencies {
     // OM-SDK
     implementation project(path: ':om-android-sdk')
 
-    //AdTiming
-    implementation rootProject.ext.dependencies.adtiming
-    implementation project(path: ':adapter:adtiming')
+//    //AdTiming
+//    implementation rootProject.ext.dependencies.adtiming
+//    implementation project(path: ':adapter:adtiming')
 
     constraints {
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
@@ -206,7 +206,7 @@ dependencies {
     // AppsFlyer
     implementation rootProject.ext.dependencies.appsflyer
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics:21.1.0'
+    implementation 'com.google.firebase:firebase-analytics:21.4.0'
 }
 
 repositories {

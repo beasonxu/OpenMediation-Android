@@ -4,6 +4,7 @@
 package com.openmediation.sdk.mobileads;
 
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -86,6 +87,8 @@ public class CrossPromotionNativeManager {
                     iconImageView.setImageBitmap(ad.getIcon());
                     iconImageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
                     iconImageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+                } else {
+                    adIconView.setVisibility(View.GONE);
                 }
             }
             config.getNativeAd().registerNativeAdView(adView);

@@ -53,7 +53,7 @@ public final class RewardedVideoAd extends BaseOmAds {
      * show ads with default placement and default scene
      */
     public static void showAd() {
-        showAd("");
+        showAd("", "");
     }
 
     /**
@@ -61,8 +61,8 @@ public final class RewardedVideoAd extends BaseOmAds {
      *
      * @param scene optional param ,if null, shows default scene
      */
-    public static void showAd(String scene) {
-        OmManager.getInstance().showRewardedVideo("", scene);
+    public static void showAd(String placementId, String scene) {
+        OmManager.getInstance().showRewardedVideo(placementId, scene);
     }
 
     /**

@@ -1,6 +1,6 @@
-include ':om-android-sdk', ':adapter:adtiming', ':adapter:admob'
+include ':om-android-sdk',  ':adapter:admob'
 //        ':adapter:applovin', ':adapter:chartboost', ':adapter:adcolony',
-//        ':adapter:mintegral', ':adapter:tapjoy',
+//        ':adapter:mintegral', ':adapter:tapjoy',':adapter:adtiming',
 //        ':adapter:vungle', ':adapter:tiktok', ':adapter:ironsource',
 //        ':adapter:unity', ':adapter:facebook', ':adapter:fyber',
 //        ':adapter:admob', ':adapter_cn:tiktok_cn', ':adapter_cn:tencentad_cn',

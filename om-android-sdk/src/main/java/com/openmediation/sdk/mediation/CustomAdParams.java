@@ -12,6 +12,7 @@ public class CustomAdParams {
     protected Integer mUserAge = null;
     protected String mUserGender = null;
     protected Boolean mUSPrivacyLimit = null;
+    protected String mUserId = null;
 
     public void setGDPRConsent(Context context, boolean consent) {
         mUserConsent = consent;
@@ -31,5 +32,9 @@ public class CustomAdParams {
 
     public void setUSPrivacyLimit(Context context, boolean value) {
         mUSPrivacyLimit = value;
+    }
+
+    public void setUserId(Context context, String id) {
+        mUserId = id;
     }
 }

@@ -1,6 +1,7 @@
 package com.openmediation.sdk.utils;
 
 import android.content.Context;
+import java.lang.reflect.Method;
 
 import com.openmediation.sdk.OmAds;
 import com.openmediation.sdk.utils.helper.AfHelper;
@@ -22,7 +23,10 @@ public class AFManager {
             return null;
         }
         try {
-            return com.appsflyer.AppsFlyerLib.getInstance().getAppsFlyerUID(context);
+            Method methodGetInstance = Class.forName("com.appsflyer.AppsFlyerLib").getMethod("getInstance");
+            Object instance = methodGetInstance.invoke(null);
+            Method methodGetAppsFlyerUID = Class.forName("com.appsflyer.AppsFlyerLib").getMethod("getAppsFlyerUID", Context.class);
+            return (String)methodGetAppsFlyerUID.invoke(instance, context);
         } catch (Throwable e) {
             DeveloperLog.LogD("getAppsFlyerUID error: " + e.getMessage());
         }

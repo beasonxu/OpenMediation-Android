@@ -37,6 +37,7 @@ import com.google.android.gms.ads.nativead.NativeAd;
 import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.ServerSideVerificationOptions;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.openmediation.sdk.mediation.AdapterErrorBuilder;
 import com.openmediation.sdk.mediation.AdnAdInfo;
@@ -48,6 +49,7 @@ import com.openmediation.sdk.mediation.MediationUtil;
 import com.openmediation.sdk.mediation.NativeAdCallback;
 import com.openmediation.sdk.mediation.RewardedVideoCallback;
 import com.openmediation.sdk.mediation.SplashAdCallback;
+import com.openmediation.sdk.nativead.AdIconView;
 import com.openmediation.sdk.nativead.NativeAdView;
 import com.openmediation.sdk.utils.AdLog;
 
@@ -292,6 +294,13 @@ public class AdMobAdapter extends CustomAdsAdapter {
         return new RewardedAdLoadCallback() {
             public void onAdLoaded(@NonNull RewardedAd ad) {
                 super.onAdLoaded(ad);
+                if (mUserId != null) {
+                    ServerSideVerificationOptions options = new ServerSideVerificationOptions
+                            .Builder()
+                            .setUserId(mUserId)
+                            .build();
+                    ad.setServerSideVerificationOptions(options);
+                }
                 mRewardedAds.put(adUnitId, ad);
                 if (callback != null) {
                     callback.onRewardedVideoLoadSuccess();
@@ -736,16 +745,21 @@ public class AdMobAdapter extends CustomAdsAdapter {
                 googleAdView.setMediaView(adMobMediaView);
             }
 
-            if (adView.getAdIconView() != null && config.getAdMobNativeAd().getIcon() != null
+            if (adView.getAdIconView() != null) {
+                AdIconView adIconView = adView.getAdIconView();
+                if (config.getAdMobNativeAd().getIcon() != null
                     && config.getAdMobNativeAd().getIcon().getDrawable() != null) {
-                adView.getAdIconView().removeAllViews();
-                ImageView iconImageView = new ImageView(adView.getContext());
-                adView.getAdIconView().addView(iconImageView);
-                iconImageView.setImageDrawable(config.getAdMobNativeAd().getIcon().getDrawable());
-                iconImageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
-                iconImageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
-                googleAdView.setIconView(adView.getAdIconView());
-            }
+                    adIconView.removeAllViews();
+                    ImageView iconImageView = new ImageView(adView.getContext());
+                    adIconView.addView(iconImageView);
+                    iconImageView.setImageDrawable(config.getAdMobNativeAd().getIcon().getDrawable());
+                    iconImageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    iconImageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+                    googleAdView.setIconView(adIconView);
+                } else {
+                    adIconView.setVisibility(View.GONE);
+                }
+            } 
 
             TextView textView = new TextView(adView.getContext());
             RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(50, 35);

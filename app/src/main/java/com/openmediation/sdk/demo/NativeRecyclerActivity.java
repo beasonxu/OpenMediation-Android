@@ -51,6 +51,7 @@ public class NativeRecyclerActivity extends Activity {
         setContentView(R.layout.activity_native_recycler);
         NativeAd.addAdListener(Constants.P_NATIVE, mNativeAdListener);
         initListView();
+        Log.d(TAG, "onCreate");
     }
 
     private void initListView() {
@@ -118,6 +119,7 @@ public class NativeRecyclerActivity extends Activity {
     }
 
     private void loadNativeAd() {
+        Log.d(TAG, "loadNativeAd");
         // for TikTok and TencentAd in China traffic
         NativeAd.setDisplayParams(Constants.P_NATIVE, 320, 0);
         NativeAd.loadAd(Constants.P_NATIVE);
