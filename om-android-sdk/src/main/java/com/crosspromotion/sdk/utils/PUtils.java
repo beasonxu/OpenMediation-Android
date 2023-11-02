@@ -39,10 +39,18 @@ public final class PUtils extends PlacementUtils {
      */
     public static void doClick(final Context context, final String placementId, final AdBean adBean) {
         try {
+            final String app_pkg = adBean.getPkgName();
             saveClickPackage(adBean.getPkgName());
             if (!adBean.isWebView()) {
-                String landingUrl = "market://details?id=" + adBean.getPkgName();
-                GpUtil.goGp(context, landingUrl);
+                if (app_pkg.startsWith("intent://") || app_pkg.startsWith("https://") || app_pkg.startsWith("http://")) {
+                    if (GpUtil.goGp(context, app_pkg)) {
+                        return;
+                    };
+                } else {
+                    String landingUrl = "market://details?id=" + app_pkg;
+                    GpUtil.goGp(context, landingUrl);
+                }
+
                 HandlerUtil.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

@@ -46,6 +46,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private Button splashButton;
     private Button promotionButton;
     private Button nativeRecyclerView;
+    private Button nativeCarouselView;
     private boolean isShowPromotion = false;
 
     private LinearLayout adContainer;
@@ -72,6 +73,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         splashButton = findViewById(R.id.btn_splash);
         adContainer = findViewById(R.id.ad_container);
         nativeRecyclerView = findViewById(R.id.btn_native_list);
+        nativeCarouselView = findViewById(R.id.btn_native_carousel);
 
         rewardVideoButton.setOnClickListener(this);
         interstitialButton.setOnClickListener(this);
@@ -79,6 +81,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         bannerButton.setOnClickListener(this);
         splashButton.setOnClickListener(this);
         nativeRecyclerView.setOnClickListener(this);
+        nativeCarouselView.setOnClickListener(this);
 
         WebView.setWebContentsDebuggingEnabled(true);
         initSDK();
@@ -97,6 +100,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     private void setButtonEnable(boolean enable) {
         bannerButton.setEnabled(enable);
         nativeRecyclerView.setEnabled(enable);
+        nativeCarouselView.setEnabled(enable);
         splashButton.setEnabled(enable);
     }
 
@@ -133,6 +137,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.btn_native_list:
                 startActivity(new Intent(MainActivity.this, NativeRecyclerActivity.class));
+                break;
+            case R.id.btn_native_carousel:
+                startActivity(new Intent(MainActivity.this, NativeCarouselActivity.class));
                 break;
         }
     }

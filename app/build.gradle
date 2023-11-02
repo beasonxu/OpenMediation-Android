@@ -57,6 +57,7 @@ dependencies {
     implementation rootProject.ext.dependencies.admob
     implementation rootProject.ext.dependencies.admob_facebook_adapter
     implementation project(path: ':adapter:admob')
+    implementation project(path: ':cardslider')
 //
 //    // Google Ad Manager ReklamUp
 //    implementation rootProject.ext.dependencies.admob

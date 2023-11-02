@@ -52,7 +52,15 @@ public class GpUtil {
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(uri);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                intent.setPackage("com.android.vending");
+                //intent.setPackage("com.android.vending");
+                try {
+                    //Class<?> launcherClass = Class.forName("org.chromium.chrome.browser.document.ChromeLauncherActivity");
+                    //intent.setClass(context, launcherClass);
+                    intent.setPackage(context.getPackageName());
+                    intent.putExtra("com.google.chrome.transition_type", 0);
+                } catch (Throwable e) {
+                }
+
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
                     return true;

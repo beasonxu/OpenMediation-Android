@@ -108,6 +108,18 @@
                 android:textAllCaps="false"
                 android:textSize="20sp" />
 
+            <Button
+                android:enabled="false"
+                android:id="@+id/btn_native_carousel"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/btn_background"
+                android:text="Native CarouselView"
+                android:textAllCaps="false"
+                android:textSize="20sp" />
+
             <LinearLayout
                 android:id="@+id/ad_container"
                 android:layout_width="match_parent"
