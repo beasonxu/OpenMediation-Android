@@ -4,6 +4,7 @@ import android.animation.LayoutTransition
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -13,7 +14,6 @@ import com.github.islamkhsh.CardSliderIndicator.IndicatorState.*
 import com.github.islamkhsh.CardSliderIndicator.SwipeDirection.TO_END
 import com.github.islamkhsh.CardSliderIndicator.SwipeDirection.TO_START
 import com.github.islamkhsh.viewpager2.ViewPager2
-import com.github.islamkhsh.viewpager2.ViewPager2.ORIENTATION_VERTICAL
 import kotlin.math.min
 
 
@@ -107,6 +107,11 @@ class CardSliderIndicator : LinearLayout {
         initIndicatorGroup(attrs)
     }
 
+    fun setViewPager(vp:CardSliderViewPager) {
+        if (viewPager == null) {
+            viewPager = vp
+        }
+    }
 
     private fun initIndicatorGroup(attrs: AttributeSet?) {
 
@@ -135,9 +140,7 @@ class CardSliderIndicator : LinearLayout {
 
 
     private fun setupWithViewCardSliderViewPager() {
-
         viewPager?.adapter?.run {
-
             removeAllViews()
 
             // create indicators

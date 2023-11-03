@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.islamkhsh.CardSliderAdapter;
+import com.github.islamkhsh.CardSliderIndicator;
 import com.github.islamkhsh.CardSliderViewPager;
 import com.openmediation.sdk.demo.utils.Constants;
 import com.openmediation.sdk.nativead.AdIconView;
@@ -41,26 +42,41 @@ public class NativeCarouselActivity extends Activity {
     private static final String TAG = "NativeCarouselActivity";
 
     private CardSliderViewPager mViewPager;
-    private CarrouselAdapter myAdapter;
-    private List<CarrouselAdapter.CarrouselAdInfo> mData;
+    private CarouselAdapter myAdapter;
+    private List<CarouselAdapter.CarouselAdInfo> mData;
     private Handler mHandler = new Handler(Looper.getMainLooper());
-
+    private List<String> mCarouselPlacmentIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native_carousel);
-        NativeAd.addAdListener(Constants.P_NATIVE_CAROUSEL_0, mNativeAdListener);
-        NativeAd.addAdListener(Constants.P_NATIVE_CAROUSEL_1, mNativeAdListener);
-        NativeAd.addAdListener(Constants.P_NATIVE_CAROUSEL_2, mNativeAdListener);
+        mCarouselPlacmentIds = NativeAd.getCachedPlacementIds("carousel");
+        if (mCarouselPlacmentIds.isEmpty()) {
+            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_0);
+            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_1);
+            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_2);
+        }
+        for (final String placementId : mCarouselPlacmentIds) {
+            NativeAd.addAdListener(placementId, mNativeAdListener);
+        }
         initListView();
         Log.d(TAG, "onCreate");
     }
 
     private void initListView() {
         mViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
+        mViewPager.setAutoSlideTime(10);
+        mViewPager.setSliderPageMargin(12);
+        mViewPager.setOtherPagesWidth(24);
+        mViewPager.setSmallScaleFactor(0.9f);
+        mViewPager.setSmallAlphaFactor(0.5f);
+        //mViewPager.setMinShadow();
+        //mViewPager.setBaseShadow();
         mData = new ArrayList<>();
-        myAdapter = new CarrouselAdapter(this, mData);
+        myAdapter = new CarouselAdapter(this, mData);
         mViewPager.setAdapter(myAdapter);
+        CardSliderIndicator indicator = (CardSliderIndicator) findViewById(R.id.indicator);
+        indicator.setViewPager(mViewPager);
         loadNativeAd();
     }
 
@@ -68,7 +84,7 @@ public class NativeCarouselActivity extends Activity {
         @Override
         public void onNativeAdLoaded(String placementId, AdInfo info) {
             Log.d(TAG, "onNativeAdLoaded, placementId: " + placementId + ", AdInfo : " + info);
-            loadSuccess(new CarrouselAdapter.CarrouselAdInfo(placementId, info));
+            loadSuccess(new CarouselAdapter.CarouselAdInfo(placementId, info));
         }
 
         @Override
@@ -89,10 +105,10 @@ public class NativeCarouselActivity extends Activity {
     };
 
 
-    private void loadSuccess(CarrouselAdapter.CarrouselAdInfo info) {
+    private void loadSuccess(CarouselAdapter.CarouselAdInfo info) {
         if (info != null) {
             mData.add(info);
-            Collections.sort(mData, new Comparator<CarrouselAdapter.CarrouselAdInfo>() {
+            Collections.sort(mData, new Comparator<CarouselAdapter.CarouselAdInfo>() {
 
                 private int strToInt(final String myString) {
                     int ret = 0;
@@ -105,9 +121,9 @@ public class NativeCarouselActivity extends Activity {
                     return ret;
                 }
                 @Override
-                public int compare(CarrouselAdapter.CarrouselAdInfo o1, CarrouselAdapter.CarrouselAdInfo o2) {
+                public int compare(CarouselAdapter.CarouselAdInfo o1, CarouselAdapter.CarouselAdInfo o2) {
                     // TODO Auto-generated method stub
-                    return Integer.compare(strToInt(o1.mPlacementId) , strToInt(o1.mPlacementId));
+                    return Integer.compare(strToInt(o1.mPlacementId) , strToInt(o2.mPlacementId));
                 }
             });
             myAdapter.notifyDataSetChanged();
@@ -117,22 +133,21 @@ public class NativeCarouselActivity extends Activity {
 
     private void loadNativeAd() {
         Log.d(TAG, "loadNativeAd");
-        // for TikTok and TencentAd in China traffic
-        NativeAd.setDisplayParams(Constants.P_NATIVE_CAROUSEL_0, 320, 0);
-        NativeAd.loadAd(Constants.P_NATIVE_CAROUSEL_0);
-        NativeAd.setDisplayParams(Constants.P_NATIVE_CAROUSEL_1, 320, 0);
-        NativeAd.loadAd(Constants.P_NATIVE_CAROUSEL_1);
-        NativeAd.setDisplayParams(Constants.P_NATIVE_CAROUSEL_2, 320, 0);
-        NativeAd.loadAd(Constants.P_NATIVE_CAROUSEL_2);
+        for (final String placementId : mCarouselPlacmentIds) {
+            // for TikTok and TencentAd in China traffic
+            NativeAd.setDisplayParams(placementId, 320, 0);
+            NativeAd.loadAd(placementId);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        NativeAd.removeAdListener(Constants.P_NATIVE_CAROUSEL_0, mNativeAdListener);
-        NativeAd.removeAdListener(Constants.P_NATIVE_CAROUSEL_1, mNativeAdListener);
-        NativeAd.removeAdListener(Constants.P_NATIVE_CAROUSEL_2, mNativeAdListener);
-        for (CarrouselAdapter.CarrouselAdInfo info : mData) {
+        for (final String placementId : mCarouselPlacmentIds) {
+            NativeAd.removeAdListener(placementId, mNativeAdListener);
+        }
+
+        for (CarouselAdapter.CarouselAdInfo info : mData) {
             if (info != null) {
                 NativeAd.destroy(info.mPlacementId, info.mAdInfo);
             }
@@ -140,21 +155,21 @@ public class NativeCarouselActivity extends Activity {
         mHandler.removeCallbacksAndMessages(null);
     }
 
-    private static class CarrouselAdapter extends CardSliderAdapter<CarrouselAdapter.NativeAdViewHolder> {
+    private static class CarouselAdapter extends CardSliderAdapter<CarouselAdapter.NativeAdViewHolder> {
 
         private static final int ITEM_VIEW_TYPE_AD = 1;
 
-        private List<CarrouselAdInfo> mData;
+        private List<CarouselAdInfo> mData;
         private Context mContext;
 
-        public CarrouselAdapter(Context context, List<CarrouselAdInfo> data) {
+        public CarouselAdapter(Context context, List<CarouselAdInfo> data) {
             this.mContext = context;
             this.mData = data;
         }
 
         @NonNull
         @Override
-        public CarrouselAdapter.NativeAdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        public CarouselAdapter.NativeAdViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             return new NativeAdViewHolder(LayoutInflater.from(mContext).inflate(R.layout.carousel_item_nativead, parent, false));
         }
 
@@ -188,14 +203,14 @@ public class NativeCarouselActivity extends Activity {
 
         @Override
         public void bindVH(@NonNull NativeAdViewHolder holder, int position) {
-            CarrouselAdInfo info = mData.get(position);
+            CarouselAdInfo info = mData.get(position);
             holder.setData(info.mPlacementId, info.mAdInfo);
         }
 
-        private static class CarrouselAdInfo {
+        private static class CarouselAdInfo {
             final public AdInfo mAdInfo;
             final public String mPlacementId;
-            public CarrouselAdInfo(String placementId, AdInfo adInfo) {
+            public CarouselAdInfo(String placementId, AdInfo adInfo) {
                 mAdInfo = adInfo;
                 mPlacementId = placementId;
             }
@@ -238,6 +253,9 @@ public class NativeCarouselActivity extends Activity {
 
                     badgeView.setVisibility(View.GONE);
                     btn.setVisibility(View.GONE);
+                    if (info.getTitle() == null || info.getTitle().isEmpty()) {
+                        title.setVisibility(View.INVISIBLE);
+                    }
 
                     nativeAdView.addView(adView);
                     nativeAdView.setTitleView(title);

@@ -165,8 +165,10 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
                 ImageView imageView = new ImageView(adView.getContext());
                 mediaView.addView(imageView);
                 imageView.setImageBitmap(mAd.getContent());
+                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                imageView.setAdjustViewBounds(true);
                 imageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
-                imageView.getLayoutParams().height = RelativeLayout.LayoutParams.WRAP_CONTENT;
+                imageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
             }
         }
 

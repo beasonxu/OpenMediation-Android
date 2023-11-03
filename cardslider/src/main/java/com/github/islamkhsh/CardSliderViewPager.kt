@@ -8,8 +8,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.util.forEach
 import androidx.core.view.children
-import androidx.databinding.BindingMethod
-import androidx.databinding.BindingMethods
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.github.islamkhsh.viewpager2.ViewPager2
@@ -17,45 +15,45 @@ import java.util.*
 import kotlin.math.max
 
 
-@BindingMethods(
-    value = [
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_pageMargin",
-            method = "setSliderPageMargin"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_otherPagesWidth",
-            method = "setOtherPagesWidth"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_smallScaleFactor",
-            method = "setSmallScaleFactor"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_smallAlphaFactor",
-            method = "setSmallAlphaFactor"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_minShadow",
-            method = "setMinShadow"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "cardSlider_baseShadow",
-            method = "setBaseShadow"
-        ),
-        BindingMethod(
-            type = CardSliderViewPager::class,
-            attribute = "auto_slide_time",
-            method = "setAutoSlideTime"
-        )
-    ]
-)
+//@BindingMethods(
+//    value = [
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_pageMargin",
+//            method = "setSliderPageMargin"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_otherPagesWidth",
+//            method = "setOtherPagesWidth"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_smallScaleFactor",
+//            method = "setSmallScaleFactor"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_smallAlphaFactor",
+//            method = "setSmallAlphaFactor"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_minShadow",
+//            method = "setMinShadow"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "cardSlider_baseShadow",
+//            method = "setBaseShadow"
+//        ),
+//        BindingMethod(
+//            type = CardSliderViewPager::class,
+//            attribute = "auto_slide_time",
+//            method = "setAutoSlideTime"
+//        )
+//    ]
+//)
 open class CardSliderViewPager : ViewPager2 {
 
     companion object {

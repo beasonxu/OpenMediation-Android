@@ -1895,4 +1895,32 @@ public final class OmManager implements InitCallback {
         } catch (Throwable e) {
         }
     }
+    public List<String> getCachedPlacementIds(int adTypeFilter, final String nameFilter) {
+        ArrayList<String> ret = new ArrayList<String>();
+        Configurations config = DataCache.getInstance().getFromMem(KeyConstants.KEY_CONFIGURATION, Configurations.class);
+        if (config == null) {
+            return ret;
+        }
+
+        Map<String, Placement> placementMap = config.getPls();
+        if (placementMap == null || placementMap.isEmpty()) {
+            return ret;
+        }
+
+        for (Map.Entry<String, Placement> placementEntry : placementMap.entrySet()) {
+            if (placementEntry == null) {
+                continue;
+            }
+            Placement placement = placementEntry.getValue();
+            if (placement != null) {
+                int adType = placement.getT();
+                String placementId = placement.getId();
+                if (adType == adTypeFilter && placement.getName() != null && placement.getName().indexOf(nameFilter) >= 0) {
+                    ret.add(placementId);
+                }
+
+            }
+        }
+        return ret;
+    }
 }

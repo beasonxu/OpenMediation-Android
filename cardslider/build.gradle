@@ -19,13 +19,6 @@ android {
         }
     }
 
-    dataBinding {
-        enabled = true
-    }
-    buildFeatures {
-        viewBinding = true
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,7 +29,13 @@ android {
     }
 }
 
-ext.kotlin_version = '1.8.20'
+ext.kotlin_version = '1.8.0'
+
+android.libraryVariants.all { variant ->
+    variant.outputs.all {
+        outputFileName = project.name + '.aar'
+    }
+}
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])

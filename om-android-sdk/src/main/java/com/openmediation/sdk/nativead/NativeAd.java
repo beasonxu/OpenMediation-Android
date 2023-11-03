@@ -4,6 +4,9 @@
 package com.openmediation.sdk.nativead;
 
 import com.openmediation.sdk.core.OmManager;
+import com.openmediation.sdk.utils.constant.CommonConstants;
+
+import java.util.List;
 
 /**
  * <p>
@@ -30,6 +33,9 @@ public class NativeAd {
 
     public static void setDisplayParams(String placementId, int width, int height) {
         OmManager.getInstance().setDisplayParams(placementId, width, height);
+    }
+    public static List<String> getCachedPlacementIds(final String nameFilter) {
+        return OmManager.getInstance().getCachedPlacementIds(CommonConstants.NATIVE, nameFilter);
     }
 
     /**
