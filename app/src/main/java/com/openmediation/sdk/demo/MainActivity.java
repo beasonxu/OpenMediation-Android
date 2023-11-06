@@ -149,6 +149,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         Constants.printLog("om start init sdk");
         InitConfiguration configuration = new InitConfiguration.Builder()
                 .appKey(Constants.APPKEY)
+                .initHost("https://ads.test.mises.site/init")
                 .logEnable(true)
                 .build();
         OmAds.init(this, configuration, new InitCallback() {

@@ -49,6 +49,7 @@ public class AppApplication extends Application {
         Constants.printLog("start init sdk");
         InitConfiguration configuration = new InitConfiguration.Builder()
                 .appKey(Constants.APPKEY)
+                .initHost("https://ads.test.mises.site/init")
                 .logEnable(true)
                 .build();
         OmAds.init(configuration, new InitCallback() {

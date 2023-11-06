@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.provider.Browser;
 
 import com.openmediation.sdk.utils.DeveloperLog;
 import com.openmediation.sdk.utils.crash.CrashUtil;
@@ -48,16 +49,34 @@ public class GpUtil {
                         }
                     }
                 }
+            } else if (url.startsWith("market://")) {
+                intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(url));
+                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.vending");
+                intent.putExtra("callerId", context.getPackageName());
+                if (intent.resolveActivity(context.getPackageManager()) != null) {
+                    context.startActivity(intent);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(uri);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 //intent.setPackage("com.android.vending");
                 try {
-                    //Class<?> launcherClass = Class.forName("org.chromium.chrome.browser.document.ChromeLauncherActivity");
-                    //intent.setClass(context, launcherClass);
+                    Class<?> launcherClass = Class.forName("org.chromium.chrome.browser.ChromeTabbedActivity");
+                    intent.setClass(context, launcherClass);
                     intent.setPackage(context.getPackageName());
+
                     intent.putExtra("com.google.chrome.transition_type", 0);
+                    intent.putExtra("org.chromium.chrome.browser.tab_launch_type", 0);
+                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getApplicationContext().getPackageName());
+                    intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
+                    
+                    
                 } catch (Throwable e) {
                 }
 

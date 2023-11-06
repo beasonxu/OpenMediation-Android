@@ -4,7 +4,7 @@
 package com.openmediation.sdk.utils.constant;
 
 public interface CommonConstants {
-    String INIT_URL = "http://ec2-34-230-112-190.compute-1.amazonaws.com:19011/init";
+    String INIT_URL = "https://ads.mises.site/init";
 
     String CHARTSET_UTF8 = "UTF-8";
     int PLAT_FORM_ANDROID = 1;
