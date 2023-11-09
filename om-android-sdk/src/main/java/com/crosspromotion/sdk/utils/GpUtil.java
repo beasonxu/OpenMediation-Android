@@ -66,17 +66,14 @@ public class GpUtil {
                 intent.setData(uri);
                 intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
                 //intent.setPackage("com.android.vending");
+                intent.setPackage(context.getPackageName());
+                intent.putExtra("com.google.chrome.transition_type", 0);
+                intent.putExtra("org.chromium.chrome.browser.tab_launch_type", 0);
+                intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+                intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
                 try {
                     Class<?> launcherClass = Class.forName("org.chromium.chrome.browser.ChromeTabbedActivity");
                     intent.setClass(context, launcherClass);
-                    intent.setPackage(context.getPackageName());
-
-                    intent.putExtra("com.google.chrome.transition_type", 0);
-                    intent.putExtra("org.chromium.chrome.browser.tab_launch_type", 0);
-                    intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getApplicationContext().getPackageName());
-                    intent.putExtra(Browser.EXTRA_CREATE_NEW_TAB, true);
-                    
-                    
                 } catch (Throwable e) {
                 }
 

@@ -477,7 +477,7 @@ public abstract class AbstractInventoryAds extends AbstractAdsApi {
      * @return interval sec
      */
     public int getDefaultInterval() {
-        return 30;
+        return 300;
     }
 
     protected void checkScheduleTaskStarted() {

@@ -353,6 +353,7 @@ public final class OmManager implements InitCallback {
         settingsLog.setUserId(userId);
         settingsLog.setEventTag(LogConstants.USER_ID_CHANGE);
         InspectorManager.getInstance().addSettingsLog(settingsLog);
+        AdapterRepository.getInstance().setUserId(userId);
     }
 
     public String getUserId() {

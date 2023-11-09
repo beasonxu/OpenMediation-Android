@@ -80,7 +80,7 @@ ext {
             "eventbus"                   : 'org.greenrobot:eventbus:3.3.1',
             "kotlin_stdlib"              : 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0',
             "kotlin_reflect"             : 'org.jetbrains.kotlin:kotlin-reflect:1.8.0',
-            "kotlinx_coroutines"         : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0',
+            "kotlinx_coroutines"         : 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0',
             "play_services_base"         : 'com.google.android.gms:play-services-base:18.1.0',
             "play_services_ads_identifier": 'com.google.android.gms:play-services-ads-identifier:18.0.1',
             "play_services_appset"       : 'com.google.android.gms:play-services-appset:16.0.2',

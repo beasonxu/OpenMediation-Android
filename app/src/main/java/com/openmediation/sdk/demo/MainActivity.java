@@ -157,6 +157,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
             public void onSuccess() {
                 Constants.printLog("init success");
                 setButtonEnable(true);
+                OmAds.setUserId("test");
+                RewardedVideoAd.loadAd();
             }
 
             @Override

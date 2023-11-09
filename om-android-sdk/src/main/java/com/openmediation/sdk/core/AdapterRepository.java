@@ -136,10 +136,26 @@ public class AdapterRepository {
             setUserAge(adapter, age);
         }
     }
+    public synchronized void setUserId(String userId) {
+        SparseArray<CustomAdsAdapter> adapterMap = AdapterUtil.getAdapterMap();
+        int size = adapterMap.size();
+        for (int i = 0; i < size; i++) {
+            CustomAdsAdapter adapter = adapterMap.valueAt(i);
+            setUserId(adapter, userId);
+        }
+    }
+
+
 
     private void setUserAge(CustomAdParams adEvent, int age) {
         if (adEvent != null) {
             adEvent.setUserAge(AdtUtil.getInstance().getApplicationContext(), age);
+        }
+    }
+
+    private void setUserId(CustomAdParams adEvent, String userId) {
+        if (adEvent != null) {
+            adEvent.setUserId(AdtUtil.getInstance().getApplicationContext(), userId);
         }
     }
 

@@ -34,7 +34,7 @@ public class CustomAdParams {
         mUSPrivacyLimit = value;
     }
 
-    public void setUserId(Context context, String id) {
-        mUserId = id;
+    public void setUserId(Context context, String userId) {
+        mUserId = userId;
     }
 }

@@ -46,7 +46,7 @@ public class PlacementInfo {
                 break;
             case CommonConstants.NATIVE:
                 mWidth = 1200;
-                mHeight = 627;
+                mHeight = 560;
                 break;
             case CommonConstants.INTERSTITIAL:
                 mWidth = 768;
