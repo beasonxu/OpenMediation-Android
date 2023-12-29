@@ -41,6 +41,8 @@ dependencies {
     // OM-SDK
     implementation project(path: ':om-android-sdk')
 
+    implementation project(path: ':cardslider')
+
 //    //AdTiming
 //    implementation rootProject.ext.dependencies.adtiming
 //    implementation project(path: ':adapter:adtiming')
@@ -57,7 +59,6 @@ dependencies {
     implementation rootProject.ext.dependencies.admob
     implementation rootProject.ext.dependencies.admob_facebook_adapter
     implementation project(path: ':adapter:admob')
-    implementation project(path: ':cardslider')
 //
 //    // Google Ad Manager ReklamUp
 //    implementation rootProject.ext.dependencies.admob
@@ -102,14 +103,14 @@ dependencies {
 //    implementation rootProject.ext.dependencies.play_services_ads_identifier
 //    implementation project(path: ':adapter:chartboost')
 //
-//    // Mintegral
-//    implementation 'com.mbridge.msdk.oversea:reward:' + rootProject.ext.dependencies.mtg_version
-//    implementation 'com.mbridge.msdk.oversea:newinterstitial:' + rootProject.ext.dependencies.mtg_version
-//    implementation 'com.mbridge.msdk.oversea:mbbanner:' + rootProject.ext.dependencies.mtg_version
-//    implementation 'com.mbridge.msdk.oversea:mbsplash:' + rootProject.ext.dependencies.mtg_version
-//    implementation 'com.mbridge.msdk.oversea:mbnative:' + rootProject.ext.dependencies.mtg_version
-//    implementation 'com.mbridge.msdk.oversea:mbbid:' + rootProject.ext.dependencies.mtg_version
-//    implementation project(path: ':adapter:mintegral')
+    // Mintegral
+    implementation 'com.mbridge.msdk.oversea:reward:' + rootProject.ext.dependencies.mtg_version
+    implementation 'com.mbridge.msdk.oversea:newinterstitial:' + rootProject.ext.dependencies.mtg_version
+    implementation 'com.mbridge.msdk.oversea:mbbanner:' + rootProject.ext.dependencies.mtg_version
+    implementation 'com.mbridge.msdk.oversea:mbsplash:' + rootProject.ext.dependencies.mtg_version
+    implementation 'com.mbridge.msdk.oversea:mbnative:' + rootProject.ext.dependencies.mtg_version
+    implementation 'com.mbridge.msdk.oversea:mbbid:' + rootProject.ext.dependencies.mtg_version
+    implementation project(path: ':adapter:mintegral')
 //
 //    // ironSource
 //    implementation rootProject.ext.dependencies.ironsource

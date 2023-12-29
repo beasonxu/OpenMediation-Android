@@ -19,7 +19,7 @@ task clean(type: Delete) {
 ext {
     //版本信息配置
     version = [
-            "buildToolsVersion": "33.0.3",
+            "buildToolsVersion": "33.0.0",
             "compileSdkVersion": 33,
             "minSdkVersion"    : 21,
             "targetSdkVersion" : 33,
@@ -66,7 +66,7 @@ ext {
             //gp-ads-identifier
             "play_services_ads_identifier": 'com.google.android.gms:play-services-ads-identifier:18.0.1',
             //Mintegral http://cdn-adn.rayjump.com/cdn-adn/v2/markdown_v2/index.html?file=sdk-m_sdk-android&lang=en
-            "mtg_version"                : '16.3.61',
+            "mtg_version"                : '16.4.11',
             "mtg_china_version"          : '16.3.62',
             // ironSource https://developers.ironsrc.com/ironsource-mobile/android/sdk-change-log/
             "ironsource"                 : 'com.ironsource.sdk:mediationsdk:7.2.7',

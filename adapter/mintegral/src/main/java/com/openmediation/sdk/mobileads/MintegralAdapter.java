@@ -276,7 +276,11 @@ public class MintegralAdapter extends CustomAdsAdapter {
                 }
                 return;
             }
-            rewardVideoHandler.showFromBid("1");
+            if (mUserId != null) {
+                rewardVideoHandler.showFromBid(mUserId);
+            } else {
+                rewardVideoHandler.showFromBid("");
+            }
         } else {
             MBRewardVideoHandler rewardVideoHandler = mRvAds.get(adUnitId);
             if (rewardVideoHandler == null || !rewardVideoHandler.isReady()) {
@@ -286,7 +290,12 @@ public class MintegralAdapter extends CustomAdsAdapter {
                 }
                 return;
             }
-            rewardVideoHandler.show("1");
+            if (mUserId != null) {
+                rewardVideoHandler.show(mUserId);
+            } else {
+                rewardVideoHandler.show("");
+            }
+
         }
     }
 
