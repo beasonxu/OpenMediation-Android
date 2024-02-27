@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.crosspromotion.sdk.ActionActivity;
@@ -33,7 +34,7 @@ import java.util.Map;
  *
  */
 public final class PUtils extends PlacementUtils {
-
+    private static final String TAG = "PUtils";
     /**
      * Ads click
      */
@@ -57,6 +58,7 @@ public final class PUtils extends PlacementUtils {
                         try {
                             BaseWebView adView = ActWebView.getInstance().getActView();
                             if (adView == null) {
+                                Log.i(TAG, "start to create BaseWebView");
                                 adView = new BaseWebView(context);
                             }
                             final Map<String, String> additionalHttpHeaders = new HashMap<>();

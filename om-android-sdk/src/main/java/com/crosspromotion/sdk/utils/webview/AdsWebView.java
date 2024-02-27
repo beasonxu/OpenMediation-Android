@@ -3,12 +3,16 @@
 
 package com.crosspromotion.sdk.utils.webview;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.openmediation.sdk.utils.AdtUtil;
 import com.openmediation.sdk.utils.DeveloperLog;
 import com.openmediation.sdk.utils.HandlerUtil;
 import com.openmediation.sdk.utils.crash.CrashUtil;
 
 public class AdsWebView {
+    private static final String TAG = "AdsWebView";
 
     private BaseWebView mAdView;
     private boolean isDestroyed;
@@ -25,13 +29,14 @@ public class AdsWebView {
     }
 
 
-    public void init() {
+    public void init(final Context context) {
         HandlerUtil.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (mAdView == null || isDestroyed) {
-                        mAdView = new BaseWebView(AdtUtil.getInstance().getApplicationContext());
+                        Log.i(TAG, "start to create BaseWebView");
+                        mAdView = new BaseWebView(context.getApplicationContext());
                     }
                     isDestroyed = false;
                     mAdView.loadUrl("about:blank");
@@ -45,7 +50,7 @@ public class AdsWebView {
 
     public BaseWebView getAdView() {
         if (isDestroyed) {
-            init();
+            init(AdtUtil.getInstance().getApplicationContext());
             return mAdView;
         }
         return mAdView;

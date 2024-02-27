@@ -5,6 +5,7 @@ package com.crosspromotion.sdk.core;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.text.TextUtils;
 
 import com.crosspromotion.sdk.core.imp.interstitial.InterstitialAdImp;
@@ -50,8 +51,12 @@ public final class OmAdNetworkManager {
      */
     public void init(Context context) {
         Cache.init();
-        AdsWebView.getInstance().init();
-        ActWebView.getInstance().init(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)  {
+            // there is a crash when init WebView before android 11
+            // so delay our init on these versions
+            AdsWebView.getInstance().init(context);
+            ActWebView.getInstance().init(context);
+        }
     }
 
     /**

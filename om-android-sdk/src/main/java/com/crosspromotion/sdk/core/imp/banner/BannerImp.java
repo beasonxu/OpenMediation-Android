@@ -6,6 +6,7 @@ package com.crosspromotion.sdk.core.imp.banner;
 import android.content.Context;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.webkit.WebView;
@@ -46,7 +47,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class BannerImp extends AbstractAdsManager implements JsBridge.MessageListener,
         View.OnAttachStateChangeListener {
-
+    private static final String TAG = "BannerImp";
     private FrameLayout mLytBanner;
     private BaseWebView mBannerView;
     private JsBridge mJsBridge;
@@ -220,6 +221,7 @@ public final class BannerImp extends AbstractAdsManager implements JsBridge.Mess
                 }
                 try {
                     if (mBannerView == null) {
+                        Log.i(TAG, "start to create BaseWebView");
                         mBannerView = new BaseWebView(mContext);
                         int[] size = getSize(mContext);
                         FrameLayout.LayoutParams bannerViewParams = new FrameLayout.LayoutParams(

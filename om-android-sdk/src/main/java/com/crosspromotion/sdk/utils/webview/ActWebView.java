@@ -4,6 +4,7 @@
 package com.crosspromotion.sdk.utils.webview;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.openmediation.sdk.utils.AdtUtil;
 import com.openmediation.sdk.utils.DeveloperLog;
@@ -11,6 +12,7 @@ import com.openmediation.sdk.utils.HandlerUtil;
 import com.openmediation.sdk.utils.crash.CrashUtil;
 
 public final class ActWebView {
+    private static final String TAG = "ActWebView";
 
     private BaseWebView mActView;
     private boolean isDestroyed;
@@ -32,6 +34,7 @@ public final class ActWebView {
             public void run() {
                 try {
                     if (mActView == null || isDestroyed) {
+                        Log.i(TAG, "start to create BaseWebView");
                         mActView = new BaseWebView(context.getApplicationContext());
 //                        mActView.loadUrl("about:blank");
                         isDestroyed = false;

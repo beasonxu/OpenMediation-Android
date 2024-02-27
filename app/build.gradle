@@ -208,7 +208,8 @@ dependencies {
     // AppsFlyer
     implementation rootProject.ext.dependencies.appsflyer
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics:21.4.0'
+    implementation("com.google.firebase:firebase-crashlytics:17.4.1")
+    implementation("com.google.firebase:firebase-analytics:21.4.0")
 }
 
 repositories {

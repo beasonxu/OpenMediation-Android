@@ -5,10 +5,10 @@ package com.crosspromotion.sdk.utils.webview;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 import android.webkit.WebSettings;
 
 public class BaseWebView extends android.webkit.WebView {
-
     public BaseWebView(Context context) {
         super(context);
         WebSettings settings = this.getSettings();

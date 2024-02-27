@@ -6,6 +6,7 @@ package com.crosspromotion.sdk.view;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.webkit.WebResourceResponse;
@@ -38,7 +39,7 @@ import org.json.JSONObject;
 import java.io.File;
 
 public final class PromotionAdView implements JsBridge.MessageListener {
-
+    private static final String TAG = "PromotionAdView";
     private static final float SCALE = 132f / 153f;
 
     private BaseWebView mAdView;
@@ -104,6 +105,7 @@ public final class PromotionAdView implements JsBridge.MessageListener {
         if (mAdView == null) {
             synchronized (PromotionAdView.class) {
                 if (mAdView == null) {
+                    Log.i(TAG, "start to create BaseWebView");
                     mAdView = new BaseWebView(AdtUtil.getInstance().getApplicationContext());
                     mAdView.setBackgroundColor(0);
                     mWebClient = new AdWebClient(AdtUtil.getInstance().getApplicationContext(), "");
