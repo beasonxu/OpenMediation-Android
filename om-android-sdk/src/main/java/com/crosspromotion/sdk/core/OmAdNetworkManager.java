@@ -54,8 +54,8 @@ public final class OmAdNetworkManager {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)  {
             // there is a crash when init WebView before android 11
             // so delay our init on these versions
-            AdsWebView.getInstance().init(context);
-            ActWebView.getInstance().init(context);
+            // AdsWebView.getInstance().init(context);
+            // ActWebView.getInstance().init(context);
         }
     }
 
