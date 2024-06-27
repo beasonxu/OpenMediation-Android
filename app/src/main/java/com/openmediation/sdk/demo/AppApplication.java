@@ -51,6 +51,8 @@ public class AppApplication extends Application {
                 .appKey(Constants.APPKEY)
                 .initHost("https://ads.test.mises.site/init")
                 .logEnable(true)
+                .preloadAdTypes(OmAds.AD_TYPE.NATIVE)
+                .useCacheAdTypes(OmAds.CACHE_TYPE.NATIVE)
                 .build();
         OmAds.init(configuration, new InitCallback() {
             @Override

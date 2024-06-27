@@ -30,6 +30,9 @@ public interface KeyConstants {
     String KEY_CACHE_INIT_CONFIG = "cache_init_config";
     String KEY_CACHE_WATERFALL_CONFIG = "cache_waterfall_config";
 
+    String KEY_CACHE_AD_BEAN = "cache_ad_bean";
+    String KEY_CACHE_AD_BEAN_UPDATED = "cache_ad_bean_updated";
+
     String KEY_DISPLAY_SCENE = "display_sceneName";
     String KEY_DISPLAY_ABT = "display_abt";
     String KEY_DISPLAY_ABT_ID = "display_abt_id";

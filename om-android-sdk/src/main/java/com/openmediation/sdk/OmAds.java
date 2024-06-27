@@ -325,7 +325,7 @@ public abstract class OmAds {
         /*Ad type Promotion*/
         PROMOTION("promotion"),
         /*Ad type NativeAd*/
-//        NATIVE("native"),
+        NATIVE("native"),
         /* No Preload*/
         NONE("none");
 

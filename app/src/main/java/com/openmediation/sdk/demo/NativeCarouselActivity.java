@@ -50,11 +50,11 @@ public class NativeCarouselActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_native_carousel);
-        mCarouselPlacmentIds = NativeAd.getCachedPlacementIds("carousel");
+        mCarouselPlacmentIds = new ArrayList<String>();//NativeAd.getCachedPlacementIds("carousel");
         if (mCarouselPlacmentIds.isEmpty()) {
-            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_0);
+            //mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_0);
             mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_1);
-            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_2);
+            //mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_2);
         }
         for (final String placementId : mCarouselPlacmentIds) {
             NativeAd.addAdListener(placementId, mNativeAdListener);
@@ -66,8 +66,8 @@ public class NativeCarouselActivity extends Activity {
     private void initListView() {
         mViewPager = (CardSliderViewPager) findViewById(R.id.viewPager);
         mViewPager.setAutoSlideTime(10);
-        mViewPager.setSliderPageMargin(12);
-        mViewPager.setOtherPagesWidth(24);
+        mViewPager.setSliderPageMargin(3);
+        mViewPager.setOtherPagesWidth(0);
         mViewPager.setSmallScaleFactor(0.9f);
         mViewPager.setSmallAlphaFactor(0.5f);
         //mViewPager.setMinShadow();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import com.crosspromotion.sdk.bean.AdBean;
 import com.crosspromotion.sdk.report.AdReport;
@@ -33,6 +34,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +61,17 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
         mContext = AdtUtil.getInstance().getApplicationContext();
         mListenerWrapper = new ListenerWrapper();
         mHandler = new HandlerUtil.HandlerHolder(null, Looper.getMainLooper());
+
+        if (isCacheAdsType()) {
+            try {
+                final String cache = DataCache.getInstance().get(mPlacementId + KeyConstants.KEY_CACHE_AD_BEAN, String.class);
+                final String json = new String(Base64.decode(cache, Base64.DEFAULT));
+                mAdBean = AdBean.toAdBean(json);
+                DeveloperLog.LogD("AdBean loaded from cache: " + mPlacementId);
+            } catch (Exception e) {
+                DeveloperLog.LogE("AdBean failed to load from cache: " + mPlacementId);
+            }
+        }
     }
 
     protected abstract int getAdType();
@@ -105,7 +118,9 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
             if (TextUtils.isEmpty(payload)) {
                 if (getAdType() != CommonConstants.PROMOTION && isCacheAdsType() && isReady()) {
                     onAdsLoadSuccess(mAdBean);
-                    return;
+                    if (DataCache.getInstance().containsKey(mPlacementId + KeyConstants.KEY_CACHE_AD_BEAN_UPDATED)) {
+                        return;
+                    }
                 }
 
                 //2:interval,4:manual
@@ -177,6 +192,15 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
             JSONObject jsonObject = new JSONObject(responseString);
             JSONArray campaigns = jsonObject.optJSONArray("campaigns");
             if (campaigns == null || campaigns.length() <= 0) {
+                if (isCacheAdsType()) {
+                    try {
+                        DataCache.getInstance().delete(mPlacementId + KeyConstants.KEY_CACHE_AD_BEAN);
+                        DeveloperLog.LogD("AdBean cache deleted: " + mPlacementId);
+                    } catch (Exception e) {
+                        DeveloperLog.LogE("AdBean cache failed to delete: " + mPlacementId);
+                    }
+
+                }
                 Error error = ErrorBuilder.build(ErrorCode.CODE_LOAD_NO_FILL);
                 onAdsLoadFailed(error);
                 return;
@@ -221,7 +245,7 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
      * 其它类型需要判断是否是手动加载
      */
     protected void onAdsLoadFailed(Error error) {
-        DeveloperLog.LogD("onAdsLoadFailed : " + mPlacementId);
+        DeveloperLog.LogD("onAdsLoadFailed : " + mPlacementId + ", " + error.toString());
         if (!isInLoadingProgress) {
             return;
         }
@@ -325,7 +349,7 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
     private boolean isCacheAdsType() {
         switch (getAdType()) {
             case CommonConstants.BANNER:
-            case CommonConstants.NATIVE:
+            //case CommonConstants.NATIVE:
                 return false;
             default:
                 return true;
@@ -480,6 +504,17 @@ public abstract class AbstractAdsManager implements Request.OnRequestCallback {
                     } else {
                         mAdBean = adBean;
                         mAdBean.setFillTime(System.currentTimeMillis());
+                        if (isCacheAdsType()) {
+                            try {
+                                final String cache = Base64.encodeToString(AdBean.toJsonString(mAdBean).getBytes(), Base64.DEFAULT).trim();
+                                DataCache.getInstance().set(mPlacementId + KeyConstants.KEY_CACHE_AD_BEAN, cache);
+                                DeveloperLog.LogD("AdBean saved to cache: " + mPlacementId);
+                                DataCache.getInstance().setMEM(mPlacementId + KeyConstants.KEY_CACHE_AD_BEAN_UPDATED, true);
+                            } catch (Exception e) {
+                                DeveloperLog.LogE("AdBean failed save to cache: " + mPlacementId);
+                            }
+
+                        }
                         onAdsLoadSuccess(mAdBean);
                     }
                 }
