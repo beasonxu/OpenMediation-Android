@@ -14,6 +14,8 @@ public class CustomAdParams {
     protected Boolean mUSPrivacyLimit = null;
     protected String mUserId = null;
 
+    protected String mTestDeviceId = null;
+
     public void setGDPRConsent(Context context, boolean consent) {
         mUserConsent = consent;
     }
@@ -37,4 +39,11 @@ public class CustomAdParams {
     public void setUserId(Context context, String userId) {
         mUserId = userId;
     }
+    public void setTestMode(Context context, String deviceId) {
+        mTestDeviceId = deviceId;
+    }
+    public String getAdapterName() {
+        return mAdapterName;
+    }
+
 }

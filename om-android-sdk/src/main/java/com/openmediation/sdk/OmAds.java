@@ -5,6 +5,7 @@ package com.openmediation.sdk;
 
 import android.app.Activity;
 
+import com.openmediation.sdk.core.AdapterRepository;
 import com.openmediation.sdk.core.OmManager;
 import com.openmediation.sdk.utils.AFManager;
 import com.openmediation.sdk.utils.AdLog;
@@ -103,6 +104,10 @@ public abstract class OmAds {
      */
     public static void setUserId(String userId) {
         OmManager.getInstance().setUserId(userId);
+    }
+
+    public static void setTestMode(String adaptorName, String deviceId) {
+        AdapterRepository.getInstance().setTestMode(adaptorName, deviceId);
     }
 
     public static String getUserId() {

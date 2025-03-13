@@ -230,7 +230,7 @@ public class NaManager extends InventoryCacheManager implements NaManagerListene
             inventoryLog.setEventTag(LogConstants.INVENTORY_OUT);
             InspectorManager.getInstance().addInventoryLog(isInventoryAdsType(), mPlacementId, inventoryLog);
 
-            loadAds(OmManager.LOAD_TYPE.CLOSE);
+            //loadAds(OmManager.LOAD_TYPE.CLOSE);
         }
     }
 

@@ -83,7 +83,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         nativeRecyclerView.setOnClickListener(this);
         nativeCarouselView.setOnClickListener(this);
 
-        WebView.setWebContentsDebuggingEnabled(true);
+
         initSDK();
         setListener();
         if (RewardedVideoAd.isReady()) {
@@ -158,7 +158,10 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Constants.printLog("init success");
                 setButtonEnable(true);
                 OmAds.setUserId("test");
-                RewardedVideoAd.loadAd();
+                //OmAds.setTestMode("AdMobAdapter", "B3EEABB8EE11C2BE770B684D95219ECB");//admob
+                OmAds.setTestMode("FacebookAdapter", "af01df5b-d728-4465-bbbe-61bc3369afe3");//facebook vivo
+                OmAds.setTestMode("FacebookAdapter", "34878c1c-471f-4e6a-befe-ea2753e8b13c");//facebook sim
+                //RewardedVideoAd.loadAd();
             }
 
             @Override

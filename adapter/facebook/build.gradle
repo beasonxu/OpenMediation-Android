@@ -7,8 +7,6 @@ android {
     defaultConfig {
         minSdkVersion rootProject.ext.version.minSdkVersion
         targetSdkVersion rootProject.ext.version.targetSdkVersion
-        versionCode rootProject.ext.version.versionCode
-        versionName rootProject.ext.adapterVersion.facebook
         buildConfigField "int", 'VERSION_CODE', String.valueOf(rootProject.ext.version.versionCode)
         buildConfigField 'String', 'VERSION_NAME', "\"" + rootProject.ext.adapterVersion.facebook + "\""
     }
@@ -19,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'com.openmediation.sdk.mobileads.facebook'
 
 }
 android.libraryVariants.all { variant ->
@@ -28,5 +27,6 @@ android.libraryVariants.all { variant ->
 }
 dependencies {
     implementation rootProject.ext.dependencies.facebook
+    implementation rootProject.ext.dependencies.facebook_infer
     implementation project(':om-android-sdk')
 }

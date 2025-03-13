@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.crosspromotion.sdk.nativead.Ad;
 import com.crosspromotion.sdk.nativead.NativeAd;
 import com.crosspromotion.sdk.nativead.NativeAdListener;
@@ -68,11 +69,12 @@ public class CrossPromotionNativeManager {
             if (adView.getMediaView() != null) {
                 MediaView mediaView = adView.getMediaView();
 
-                if (ad.getContent() != null) {
+                if (ad.getRawContent() != null) {
                     mediaView.removeAllViews();
                     ImageView imageView = new ImageView(adView.getContext());
                     mediaView.addView(imageView);
-                    imageView.setImageBitmap(ad.getContent());
+                    ad.fillImageView(adView.getContext(), imageView);
+
                     imageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
                     imageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
                 }

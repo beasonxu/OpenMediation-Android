@@ -5,21 +5,26 @@
 
 package com.openmediation.sdk.mobileads;
 
+import android.widget.TextView;
+
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdBase;
 
 public class FacebookNativeAdsConfig {
-    private NativeAd nativeAd;
+    private NativeAdBase nativeAd;
     private AdOptionsView adOptionsView;
     private MediaView mediaView;
     private MediaView iconView;
 
-    public NativeAd getNativeAd() {
+    private TextView sponsoredLabelView;
+
+    public NativeAdBase getNativeAd() {
         return nativeAd;
     }
 
-    public void setNativeAd(NativeAd nativeAd) {
+    public void setNativeAd(NativeAdBase nativeAd) {
         this.nativeAd = nativeAd;
     }
 
@@ -46,4 +51,11 @@ public class FacebookNativeAdsConfig {
     public void setIconView(MediaView iconView) {
         this.iconView = iconView;
     }
+
+    public void setSponsoredLabelView(TextView textView){ this.sponsoredLabelView = textView; }
+
+    public TextView getSponsoredLabelView() {return this.sponsoredLabelView;}
+
+
+    public String getSponsoredText() {return this.nativeAd.getSponsoredTranslation();}
 }

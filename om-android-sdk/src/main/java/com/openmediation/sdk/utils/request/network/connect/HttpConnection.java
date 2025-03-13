@@ -11,6 +11,7 @@ import com.openmediation.sdk.utils.request.network.Headers;
 import com.openmediation.sdk.utils.request.network.Request;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -25,7 +26,15 @@ public class HttpConnection extends AbstractUrlConnection {
     @Override
     public void cancel() throws Exception {
         if (mConnection != null) {
-            IOUtil.closeQuietly(mConnection.getInputStream());
+            InputStream inputStream = mConnection.getErrorStream();
+            if (inputStream == null) {
+                inputStream = mConnection.getInputStream();
+            } else {
+                DeveloperLog.LogD("HttpConnection", "cancel with error" );
+            }
+            if (inputStream != null) {
+                IOUtil.closeQuietly(inputStream);
+            }
             mConnection.disconnect();
         }
     }

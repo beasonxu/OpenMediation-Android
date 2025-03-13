@@ -149,6 +149,7 @@ public abstract class AbstractInventoryAds extends AbstractAdsApi {
             DeveloperLog.LogE("load ad for placement : " +
                     (Preconditions.checkNotNull(mPlacement) ? mPlacement.getId() : "") + " failed cause : " + error);
             AdsUtil.loadBlockedReport(Preconditions.checkNotNull(mPlacement) ? mPlacement.getId() : "", error);
+            callbackLoadError(error);
             return true;
         }
         if (isInShowingProgress) {

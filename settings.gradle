@@ -1,4 +1,4 @@
-include ':om-android-sdk',  ':adapter:admob', ':cardslider', ':adapter:mintegral'
+include ':om-android-sdk',  ':adapter:admob', ':cardslider', ':adapter:mintegral',':adapter:facebook'
 //        ':adapter:applovin', ':adapter:chartboost', ':adapter:adcolony',
 //        ':adapter:mintegral', ':adapter:tapjoy',':adapter:adtiming',
 //        ':adapter:vungle', ':adapter:tiktok', ':adapter:ironsource',

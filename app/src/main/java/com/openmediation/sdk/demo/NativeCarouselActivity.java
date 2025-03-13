@@ -53,7 +53,7 @@ public class NativeCarouselActivity extends Activity {
         mCarouselPlacmentIds = new ArrayList<String>();//NativeAd.getCachedPlacementIds("carousel");
         if (mCarouselPlacmentIds.isEmpty()) {
             //mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_0);
-            mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_1);
+            mCarouselPlacmentIds.add("236");
             //mCarouselPlacmentIds.add(Constants.P_NATIVE_CAROUSEL_2);
         }
         for (final String placementId : mCarouselPlacmentIds) {
@@ -89,7 +89,7 @@ public class NativeCarouselActivity extends Activity {
 
         @Override
         public void onNativeAdLoadFailed(String placementId, Error error) {
-            Log.d(TAG, "onNativeAdLoadFailed, placementId: " + placementId + ", error : " + error);
+            Log.e(TAG, "onNativeAdLoadFailed, placementId: " + placementId + ", error : " + error);
             loadSuccess(null);
         }
 
@@ -239,7 +239,7 @@ public class NativeCarouselActivity extends Activity {
                     layoutParams.addRule(Gravity.CENTER);
                     itemContainView.addView(info.getView(), layoutParams);
                 } else {
-                    View adView = LayoutInflater.from(mContext).inflate(R.layout.native_ad_layout, null);
+                    View adView = LayoutInflater.from(mContext).inflate(R.layout.carousel_native_ad_layout, null);
                     TextView title = adView.findViewById(R.id.ad_title);
                     title.setText(info.getTitle());
                     TextView desc = adView.findViewById(R.id.ad_desc);

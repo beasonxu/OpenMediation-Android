@@ -145,6 +145,17 @@ public class AdapterRepository {
         }
     }
 
+    public synchronized void setTestMode(String adaptorName, String deviceId) {
+        SparseArray<CustomAdsAdapter> adapterMap = AdapterUtil.getAdapterMap();
+        int size = adapterMap.size();
+        for (int i = 0; i < size; i++) {
+            CustomAdsAdapter adapter = adapterMap.valueAt(i);
+            if (adapter.getAdapterName().equalsIgnoreCase(adaptorName)) {
+                setTestMode(adapter, deviceId);
+            }
+        }
+    }
+
 
 
     private void setUserAge(CustomAdParams adEvent, int age) {
@@ -156,6 +167,12 @@ public class AdapterRepository {
     private void setUserId(CustomAdParams adEvent, String userId) {
         if (adEvent != null) {
             adEvent.setUserId(AdtUtil.getInstance().getApplicationContext(), userId);
+        }
+    }
+
+    private void setTestMode(CustomAdParams adEvent, String deviceId) {
+        if (adEvent != null) {
+            adEvent.setTestMode(AdtUtil.getInstance().getApplicationContext(), deviceId);
         }
     }
 

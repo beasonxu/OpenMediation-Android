@@ -9,10 +9,10 @@ public class Constants {
 
     public static final String TAG = "OmDebug";
     public static boolean ENABLE_LOG = true;
-    public static final String APPKEY = "yHtyiIvylOW0RjcuWvIO9mrL63X9vtcH";
-
+    //public static final String APPKEY = "yHtyiIvylOW0RjcuWvIO9mrL63X9vtcH";
+    public static final String APPKEY = "4rUDI7Lv0rdkJIljwwhu6OJwgzyft7fr";
     public static final String P_BANNER = "104";
-    public static final String P_NATIVE = "229";
+    public static final String P_NATIVE = "241";
     public static final String P_NATIVE_CAROUSEL_0 = "229";
     public static final String P_NATIVE_CAROUSEL_1 = "232";
     public static final String P_NATIVE_CAROUSEL_2 = "233";

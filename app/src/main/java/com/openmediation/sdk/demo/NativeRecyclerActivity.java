@@ -11,6 +11,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -52,6 +53,7 @@ public class NativeRecyclerActivity extends Activity {
         NativeAd.addAdListener(Constants.P_NATIVE, mNativeAdListener);
         initListView();
         Log.d(TAG, "onCreate");
+        WebView.setWebContentsDebuggingEnabled(true);
     }
 
     private void initListView() {
@@ -85,7 +87,7 @@ public class NativeRecyclerActivity extends Activity {
 
         @Override
         public void onNativeAdLoadFailed(String placementId, Error error) {
-            Log.d(TAG, "onNativeAdLoadFailed, placementId: " + placementId + ", error : " + error);
+            Log.e(TAG, "onNativeAdLoadFailed, placementId: " + placementId + ", error : " + error);
             loadFinish();
             loadSuccess(null);
         }
@@ -121,7 +123,7 @@ public class NativeRecyclerActivity extends Activity {
     private void loadNativeAd() {
         Log.d(TAG, "loadNativeAd");
         // for TikTok and TencentAd in China traffic
-        NativeAd.setDisplayParams(Constants.P_NATIVE, 320, 0);
+        NativeAd.setDisplayParams(Constants.P_NATIVE, 320, 70);
         NativeAd.loadAd(Constants.P_NATIVE);
     }
 
@@ -239,14 +241,14 @@ public class NativeRecyclerActivity extends Activity {
                     layoutParams.addRule(Gravity.CENTER);
                     itemContainView.addView(info.getView(), layoutParams);
                 } else {
-                    View adView = LayoutInflater.from(mContext).inflate(R.layout.native_ad_layout, null);
+                    View adView = LayoutInflater.from(mContext).inflate(R.layout.native_banner_layout, null);
                     TextView title = adView.findViewById(R.id.ad_title);
                     title.setText(info.getTitle());
                     TextView desc = adView.findViewById(R.id.ad_desc);
                     desc.setText(info.getDesc());
                     Button btn = adView.findViewById(R.id.ad_btn);
                     btn.setText(info.getCallToActionText());
-                    MediaView mediaView = adView.findViewById(R.id.ad_media);
+                    //MediaView mediaView = adView.findViewById(R.id.ad_media);
                     NativeAdView nativeAdView = new NativeAdView(mContext);
                     AdIconView adIconView = adView.findViewById(R.id.ad_icon_media);
                     nativeAdView.addView(adView);
@@ -254,7 +256,7 @@ public class NativeRecyclerActivity extends Activity {
                     nativeAdView.setDescView(desc);
                     nativeAdView.setAdIconView(adIconView);
                     nativeAdView.setCallToActionView(btn);
-                    nativeAdView.setMediaView(mediaView);
+                    //nativeAdView.setMediaView(mediaView);
 
                     NativeAd.registerNativeAdView(placementId, nativeAdView, info);
 

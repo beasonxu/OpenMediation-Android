@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion rootProject.ext.version.compileSdkVersion
-
+    namespace "com.openmediation.sdk.demo"
     defaultConfig {
-        applicationId "site.mises.browser_dev"
-        minSdkVersion 21
+        applicationId "site.mises.browser"
+        minSdkVersion 26
         targetSdkVersion rootProject.ext.version.targetSdkVersion
         versionCode 1
         versionName "1.0"
@@ -26,6 +26,9 @@ android {
 
     packagingOptions {
         exclude("META-INF/*.kotlin_module")
+    }
+    configurations.all {
+        resolutionStrategy.force rootProject.ext.dependencies.admob
     }
 }
 
@@ -66,8 +69,8 @@ dependencies {
 //    implementation project(path: ':adapter:gam_reklamup')
 //
 //    //Facebook
-//    implementation rootProject.ext.dependencies.facebook
-//    implementation project(path: ':adapter:facebook')
+    implementation rootProject.ext.dependencies.facebook
+    implementation project(path: ':adapter:facebook')
 //
 //    //Unity
 //    implementation rootProject.ext.dependencies.unity
@@ -209,8 +212,8 @@ dependencies {
     // AppsFlyer
     implementation rootProject.ext.dependencies.appsflyer
     // Firebase
-    implementation("com.google.firebase:firebase-crashlytics:17.4.1")
-    implementation("com.google.firebase:firebase-analytics:21.4.0")
+    //implementation("com.google.firebase:firebase-crashlytics:19.4.0")
+    implementation("com.google.firebase:firebase-analytics:22.1.2")
 }
 
 repositories {

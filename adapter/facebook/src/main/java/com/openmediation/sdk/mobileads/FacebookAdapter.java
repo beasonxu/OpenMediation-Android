@@ -6,8 +6,10 @@ package com.openmediation.sdk.mobileads;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdError;
@@ -23,8 +25,10 @@ import com.facebook.ads.InterstitialAd;
 import com.facebook.ads.InterstitialAdExtendedListener;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
+import com.facebook.ads.NativeAdBase;
 import com.facebook.ads.NativeAdLayout;
 import com.facebook.ads.NativeAdListener;
+import com.facebook.ads.NativeBannerAd;
 import com.facebook.ads.RewardedVideoAd;
 import com.facebook.ads.RewardedVideoAdExtendedListener;
 import com.openmediation.sdk.mediation.AdapterErrorBuilder;
@@ -38,8 +42,10 @@ import com.openmediation.sdk.mediation.NativeAdCallback;
 import com.openmediation.sdk.mediation.RewardedVideoCallback;
 import com.openmediation.sdk.nativead.NativeAdView;
 import com.openmediation.sdk.utils.AdLog;
+import com.openmediation.sdk.utils.DensityUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,7 +54,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class FacebookAdapter extends CustomAdsAdapter {
 
-    private static final String PAY_LOAD = "pay_load";
+    private static final String EXTRA_PAY_LOAD = "pay_load";
+    private static final String EXTRA_WIDTH = "width";
+    private static final String EXTRA_HEIGHT = "height";
     private Boolean mDidInitSuccess = null;
     private AtomicBoolean mDidCallInit;
 
@@ -148,12 +156,12 @@ public class FacebookAdapter extends CustomAdsAdapter {
                     callback.onRewardedVideoLoadSuccess();
                 }
             } else {
-                if (extras != null && extras.containsKey(PAY_LOAD)) {
+                if (extras != null && extras.containsKey(EXTRA_PAY_LOAD)) {
                     try {
                         MediationUtil.event(702, extras, getAdNetworkId());
                     } catch (Throwable ignored) {
                     }
-                    configBuilder.withBid(String.valueOf(extras.get(PAY_LOAD)));
+                    configBuilder.withBid(String.valueOf(extras.get(EXTRA_PAY_LOAD)));
                 } else {
                     try {
                         MediationUtil.event(703, extras, getAdNetworkId());
@@ -239,12 +247,12 @@ public class FacebookAdapter extends CustomAdsAdapter {
                     callback.onInterstitialAdLoadSuccess();
                 }
             } else {
-                if (extras != null && extras.containsKey(PAY_LOAD)) {
+                if (extras != null && extras.containsKey(EXTRA_PAY_LOAD)) {
                     try {
                         MediationUtil.event(702, extras, getAdNetworkId());
                     } catch (Throwable ignored) {
                     }
-                    configBuilder.withBid(String.valueOf(extras.get(PAY_LOAD)));
+                    configBuilder.withBid(String.valueOf(extras.get(EXTRA_PAY_LOAD)));
                 } else {
                     try {
                         MediationUtil.event(703, extras, getAdNetworkId());
@@ -315,8 +323,8 @@ public class FacebookAdapter extends CustomAdsAdapter {
             AdSize adSize = getAdSize(MediationUtil.getContext(), extras);
             AdView adView = new AdView(MediationUtil.getContext(), adUnitId, adSize);
             AdView.AdViewLoadConfigBuilder loadConfigBuilder = adView.buildLoadAdConfig();
-            if (extras.containsKey(PAY_LOAD)) {
-                loadConfigBuilder.withBid(String.valueOf(extras.get(PAY_LOAD)));
+            if (extras.containsKey(EXTRA_PAY_LOAD)) {
+                loadConfigBuilder.withBid(String.valueOf(extras.get(EXTRA_PAY_LOAD)));
             }
             loadConfigBuilder.withAdListener(new FbBnAdListener(adView, callback));
             adView.loadAd(loadConfigBuilder.build());
@@ -338,6 +346,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
         mBannerAds.get(adUnitId).destroy();
         mBannerAds.remove(adUnitId);
     }
+
 
     @Override
     public void initNativeAd(Activity activity, Map<String, Object> extras, NativeAdCallback callback) {
@@ -367,13 +376,25 @@ public class FacebookAdapter extends CustomAdsAdapter {
         super.loadNativeAd(activity, adUnitId, extras, callback);
         String error = check(adUnitId);
         if (TextUtils.isEmpty(error)) {
-            NativeAd nativeAd = new NativeAd(MediationUtil.getContext(), adUnitId);
-            NativeAd.NativeAdLoadConfigBuilder loadConfigBuilder = nativeAd.buildLoadAdConfig();
-            if (extras.containsKey(PAY_LOAD)) {
-                loadConfigBuilder.withBid(String.valueOf(extras.get(PAY_LOAD)));
+            if (extras.containsKey(EXTRA_WIDTH) && extras.containsKey(EXTRA_HEIGHT) && ((Integer)extras.get(EXTRA_HEIGHT) < (Integer)extras.get(EXTRA_WIDTH) / 3)) {
+                //Use Native Banner
+                NativeBannerAd nativeAd = new NativeBannerAd(MediationUtil.getContext(), adUnitId);
+                NativeBannerAd.NativeAdLoadConfigBuilder loadConfigBuilder = nativeAd.buildLoadAdConfig();
+                if (extras.containsKey(EXTRA_PAY_LOAD)) {
+                    loadConfigBuilder.withBid(String.valueOf(extras.get(EXTRA_PAY_LOAD)));
+                }
+                loadConfigBuilder.withAdListener(new FbNaBannerAdListener(nativeAd, callback));
+                nativeAd.loadAd(loadConfigBuilder.build());
+            } else {
+                NativeAd nativeAd = new NativeAd(MediationUtil.getContext(), adUnitId);
+                NativeAd.NativeAdLoadConfigBuilder loadConfigBuilder = nativeAd.buildLoadAdConfig();
+                if (extras.containsKey(EXTRA_PAY_LOAD)) {
+                    loadConfigBuilder.withBid(String.valueOf(extras.get(EXTRA_PAY_LOAD)));
+                }
+                loadConfigBuilder.withAdListener(new FbNaAdListener(nativeAd, callback));
+                nativeAd.loadAd(loadConfigBuilder.build());
             }
-            loadConfigBuilder.withAdListener(new FbNaAdListener(nativeAd, callback));
-            nativeAd.loadAd(loadConfigBuilder.build());
+
         } else {
             if (callback != null) {
                 callback.onNativeAdLoadFailed(AdapterErrorBuilder.buildLoadCheckError(
@@ -397,6 +418,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
             if (config.getIconView() != null) {
                 config.getIconView().destroy();
             }
+
             if (config.getNativeAd() != null) {
                 config.getNativeAd().unregisterView();
                 config.getNativeAd().destroy();
@@ -445,10 +467,22 @@ public class FacebookAdapter extends CustomAdsAdapter {
                 AdOptionsView adOptionsView = new AdOptionsView(adView.getContext(), config.getNativeAd(), fbNativeAdLayout);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
                 adView.addView(adOptionsView, layoutParams);
                 config.setAdOptionsView(adOptionsView);
+            }
+            if (config.getSponsoredLabelView() == null) {
+                TextView sponsoredLabelView = new TextView(adView.getContext());
+                sponsoredLabelView.setText(config.getSponsoredText());
+                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+                sponsoredLabelView.setPadding(0, DensityUtil.dip2px(adView.getContext(), 2),0,DensityUtil.dip2px(adView.getContext(), 2));
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                adView.addView(sponsoredLabelView, layoutParams);
+                config.setSponsoredLabelView(sponsoredLabelView);
             }
 
             if (adView.getMediaView() != null) {
@@ -462,7 +496,15 @@ public class FacebookAdapter extends CustomAdsAdapter {
                 config.setIconView(iconView);
             }
             //pay attention to the order of fb_mediaView and adIconView here
-            config.getNativeAd().registerViewForInteraction(fbNativeAdLayout, config.getMediaView(), config.getIconView(), views);
+            NativeAdBase baseAd = config.getNativeAd();
+            if (baseAd instanceof NativeAd) {
+                NativeAd na = (NativeAd)baseAd;
+                na.registerViewForInteraction(fbNativeAdLayout, config.getMediaView(), config.getIconView(), views);
+            } else if (baseAd instanceof NativeBannerAd) {
+                NativeBannerAd na = (NativeBannerAd)baseAd;
+                na.registerViewForInteraction(fbNativeAdLayout, config.getIconView(), views);
+            }
+
 
             if (config.getAdOptionsView() != null) {
                 config.getAdOptionsView().bringToFront();
@@ -769,6 +811,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
             if (callback != null) {
                 FacebookNativeAdsConfig config = new FacebookNativeAdsConfig();
                 config.setNativeAd(nativeAd);
+
                 AdnAdInfo info = new AdnAdInfo();
                 info.setAdnNativeAd(config);
                 info.setDesc(nativeAd.getAdBodyText());
@@ -793,5 +836,69 @@ public class FacebookAdapter extends CustomAdsAdapter {
                 callback.onNativeAdImpression();
             }
         }
+    }
+
+    private static class FbNaBannerAdListener implements NativeAdListener {
+
+        private NativeAdCallback callback;
+        private NativeBannerAd nativeAd;
+
+        FbNaBannerAdListener(NativeBannerAd nativeAd, NativeAdCallback callback) {
+            this.callback = callback;
+            this.nativeAd = nativeAd;
+        }
+
+        @Override
+        public void onMediaDownloaded(Ad ad) {
+
+        }
+
+        @Override
+        public void onError(Ad ad, AdError adError) {
+            if (callback != null) {
+                callback.onNativeAdLoadFailed(AdapterErrorBuilder.buildLoadError(
+                        AdapterErrorBuilder.AD_UNIT_NATIVE, "FacebookAdapter", adError.getErrorCode(), adError.getErrorMessage()));
+            }
+        }
+
+        @Override
+        public void onAdLoaded(Ad ad) {
+            if (callback != null) {
+                if(nativeAd.isAdInvalidated()) {
+                    callback.onNativeAdLoadFailed(AdapterErrorBuilder.buildLoadError(
+                            AdapterErrorBuilder.AD_UNIT_NATIVE, "FacebookAdapter", "NativeAd is Invalidated"));
+                    return;
+                }
+                FacebookNativeAdsConfig config = new FacebookNativeAdsConfig();
+                config.setNativeAd(nativeAd);
+                AdnAdInfo info = new AdnAdInfo();
+                info.setAdnNativeAd(config);
+                info.setDesc(nativeAd.getAdSocialContext());
+                info.setType(MediationInfo.MEDIATION_ID_3);
+                info.setCallToActionText(nativeAd.getAdCallToAction());
+                info.setTitle(nativeAd.getAdHeadline());
+                callback.onNativeAdLoadSuccess(info);
+            }
+        }
+
+        @Override
+        public void onAdClicked(Ad ad) {
+            if (callback != null) {
+                callback.onNativeAdAdClicked();
+            }
+        }
+
+        @Override
+        public void onLoggingImpression(Ad ad) {
+            AdLog.getSingleton().LogD("FacebookAdapter", "NativeBannerAd onLoggingImpression");
+            if (callback != null) {
+                callback.onNativeAdImpression();
+            }
+        }
+    }
+    @Override
+    public void setTestMode(Context context, String deviceId) {
+        super.setTestMode(context, deviceId);
+        AdSettings.addTestDevice(deviceId);
     }
 }

@@ -155,6 +155,26 @@ public final class ImageUtils {
         return BitmapFactory.decodeByteArray(data, offset, data.length);
     }
 
+    public static boolean isGif(final InputStream is) {
+        if (is == null) return false;
+        try {
+            final byte[] content = input2Byte(is);
+            return isGIF(content);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    public static boolean isWebp(final InputStream is) {
+        if (is == null) return false;
+        try {
+            final byte[] content = input2Byte(is);
+            return isWEBP(content);
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
     private static boolean isJPEG(final byte[] b) {
         return b.length >= 2
                 && (b[0] == (byte) 0xFF) && (b[1] == (byte) 0xD8);
@@ -165,6 +185,12 @@ public final class ImageUtils {
                 && b[0] == 'G' && b[1] == 'I'
                 && b[2] == 'F' && b[3] == '8'
                 && (b[4] == '7' || b[4] == '9') && b[5] == 'a';
+    }
+
+    private static boolean isWEBP(final byte[] b) {
+        return b.length >= 12
+                && new String(b, 0, 4).equals("RIFF")
+                && new String(b, 8, 4).equals("WEBP");
     }
 
     private static boolean isPNG(final byte[] b) {

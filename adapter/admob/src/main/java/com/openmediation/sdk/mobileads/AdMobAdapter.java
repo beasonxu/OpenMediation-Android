@@ -3,6 +3,8 @@
 
 package com.openmediation.sdk.mobileads;
 
+import static com.google.android.gms.ads.nativead.NativeAdOptions.ADCHOICES_BOTTOM_RIGHT;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,9 +13,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -53,7 +57,9 @@ import com.openmediation.sdk.mediation.SplashAdCallback;
 import com.openmediation.sdk.nativead.AdIconView;
 import com.openmediation.sdk.nativead.NativeAdView;
 import com.openmediation.sdk.utils.AdLog;
+import com.openmediation.sdk.utils.DensityUtil;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -110,6 +116,15 @@ public class AdMobAdapter extends CustomAdsAdapter {
         setAgeRestricted(context, age < 13);
     }
 
+    @Override
+    public void setTestMode(Context context, String deviceId) {
+        super.setTestMode(context, deviceId);
+        RequestConfiguration requestConfiguration = MobileAds.getRequestConfiguration().toBuilder()
+                .setTestDeviceIds(Arrays.asList(deviceId))
+                .build();
+        MobileAds.setRequestConfiguration(requestConfiguration);
+    }
+
     private AdRequest createAdRequest() {
         AdRequest.Builder builder = new AdRequest.Builder();
         if (mUserConsent != null || mUSPrivacyLimit != null) {
@@ -128,7 +143,12 @@ public class AdMobAdapter extends CustomAdsAdapter {
     private synchronized void initSDK() {
         mInitState = InitState.INIT_PENDING;
         MobileAds.initialize(MediationUtil.getContext());
+
+        if (mTestDeviceId != null) {
+            setTestMode(MediationUtil.getContext(), mTestDeviceId);
+        }
         onInitSuccess();
+
     }
 
     private void onInitSuccess() {
@@ -670,6 +690,7 @@ public class AdMobAdapter extends CustomAdsAdapter {
                         }
                     });
                     NativeAdOptions.Builder nativeAdOptionsBuilder = new NativeAdOptions.Builder();
+                    nativeAdOptionsBuilder.setAdChoicesPlacement(ADCHOICES_BOTTOM_RIGHT);
                     //single image
                     nativeAdOptionsBuilder.setRequestMultipleImages(false);
                     AdLoader loader = builder.withNativeAdOptions(nativeAdOptionsBuilder.build())
@@ -762,19 +783,28 @@ public class AdMobAdapter extends CustomAdsAdapter {
                 }
             } 
 
-            TextView textView = new TextView(adView.getContext());
-            RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(50, 35);
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-            textView.setLayoutParams(layoutParams);
-            textView.setBackgroundColor(Color.argb(255, 234, 234, 234));
-            textView.setGravity(Gravity.CENTER);
-            textView.setText("Ad");
-            textView.setTextSize(10);
-            textView.setTextColor(Color.argb(255, 45, 174, 201));
-            googleAdView.setAdvertiserView(textView);
+            if (adView.getChildCount() > 0 && config.getAdvertiserView() == null) {
+                View actualView = adView.getChildAt(0);
+                TextView sponsoredLabelView = new TextView(actualView.getContext());
+                sponsoredLabelView.setText("Sponsor");
+                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+                sponsoredLabelView.setPadding(0, DensityUtil.dip2px(adView.getContext(), 2),0,DensityUtil.dip2px(adView.getContext(), 2));
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                        RelativeLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+                if (actualView instanceof ViewGroup) {
+                    ((ViewGroup)actualView).addView(sponsoredLabelView, layoutParams);
+                }
+
+                config.setAdvertiserView(sponsoredLabelView);
+                googleAdView.setAdvertiserView(sponsoredLabelView);
+                sponsoredLabelView.bringToFront();
+            }
+
             googleAdView.setNativeAd(config.getAdMobNativeAd());
 
-            textView.bringToFront();
+
             if (googleAdView.getAdChoicesView() != null) {
                 googleAdView.getAdChoicesView().bringToFront();
             }

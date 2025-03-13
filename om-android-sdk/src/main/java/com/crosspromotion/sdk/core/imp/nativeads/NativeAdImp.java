@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
 import com.crosspromotion.sdk.bean.AdBean;
 import com.crosspromotion.sdk.bean.AdMark;
 import com.crosspromotion.sdk.core.AbstractAdsManager;
@@ -32,6 +33,7 @@ import com.openmediation.sdk.utils.WorkExecutor;
 import com.openmediation.sdk.utils.constant.CommonConstants;
 import com.openmediation.sdk.utils.crash.CrashUtil;
 
+import java.io.File;
 import java.util.List;
 
 
@@ -97,9 +99,9 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
                 onAdsLoadFailed(ErrorBuilder.build(ErrorCode.CODE_LOAD_RESOURCE_ERROR));
                 return;
             }
-            Bitmap content = ImageUtils.getBitmap(IOUtil.getFileInputStream(Cache.getCacheFile(mContext,
-                    imgUrls.get(0), null)));
-            if (content == null) {
+            File contentFile = Cache.getCacheFile(mContext,
+                    imgUrls.get(0), null);
+            if (contentFile == null) {
                 onAdsLoadFailed(ErrorBuilder.build(ErrorCode.CODE_LOAD_RESOURCE_ERROR));
                 return;
             }
@@ -109,7 +111,7 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
             builder.title(mAdBean.getTitle())
                     .description(mAdBean.getDescription())
                     .cta("install")
-                    .content(content)
+                    .rawContent(contentFile)
                     .icon(icon);
 
             mAd = builder.build();
@@ -160,11 +162,12 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
         if (adView.getMediaView() != null) {
             MediaView mediaView = adView.getMediaView();
 
-            if (mAd.getContent() != null) {
+            if (mAd.getRawContent() != null) {
                 mediaView.removeAllViews();
                 ImageView imageView = new ImageView(adView.getContext());
                 mediaView.addView(imageView);
-                imageView.setImageBitmap(mAd.getContent());
+                mAd.fillImageView(adView.getContext(), imageView);
+
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
                 imageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;

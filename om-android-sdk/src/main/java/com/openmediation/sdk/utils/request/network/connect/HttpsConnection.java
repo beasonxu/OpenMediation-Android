@@ -13,6 +13,7 @@ import com.openmediation.sdk.utils.request.network.certificate.PublicKeyTrustMan
 import com.openmediation.sdk.utils.request.network.certificate.SSLFactory;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
@@ -32,7 +33,16 @@ public final class HttpsConnection extends AbstractUrlConnection {
     @Override
     public void cancel() throws Exception {
         if (mConnection != null) {
-            IOUtil.closeQuietly(mConnection.getInputStream());
+            InputStream inputStream = mConnection.getErrorStream();
+            if (inputStream == null) {
+                inputStream = mConnection.getInputStream();
+            } else {
+                DeveloperLog.LogD("HttpsConnection", "cancel with error" );
+            }
+            if (inputStream != null) {
+                IOUtil.closeQuietly(inputStream);
+            }
+
             mConnection.disconnect();
         }
     }
