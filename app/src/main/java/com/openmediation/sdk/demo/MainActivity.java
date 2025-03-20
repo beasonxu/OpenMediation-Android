@@ -158,9 +158,9 @@ public class MainActivity extends Activity implements View.OnClickListener {
                 Constants.printLog("init success");
                 setButtonEnable(true);
                 OmAds.setUserId("test");
-                //OmAds.setTestMode("AdMobAdapter", "B3EEABB8EE11C2BE770B684D95219ECB");//admob
+                OmAds.setTestMode("AdMobAdapter", "B3EEABB8EE11C2BE770B684D95219ECB");//admob
                 OmAds.setTestMode("FacebookAdapter", "af01df5b-d728-4465-bbbe-61bc3369afe3");//facebook vivo
-                OmAds.setTestMode("FacebookAdapter", "34878c1c-471f-4e6a-befe-ea2753e8b13c");//facebook sim
+                OmAds.setTestMode("FacebookAdapter", "02ff1d81-7394-4a27-9b32-b7f53f71849a");//facebook sim
                 //RewardedVideoAd.loadAd();
             }
 

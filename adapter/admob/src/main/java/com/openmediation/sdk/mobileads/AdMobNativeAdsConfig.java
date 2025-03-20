@@ -18,6 +18,17 @@ public class AdMobNativeAdsConfig {
 
     private TextView mAdvertiserView;
 
+    private Boolean mBannerStyle;
+
+    public Boolean isBannerStyle() {
+        if (mBannerStyle == null) return false;
+        return mBannerStyle;
+    }
+
+    public void setBannerStyle(Boolean bannerStyle) {
+        this.mBannerStyle = bannerStyle;
+    }
+
     public AdLoader getAdLoader() {
         return mAdLoader;
     }

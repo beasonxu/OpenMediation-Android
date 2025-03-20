@@ -21,7 +21,7 @@ ext {
     version = [
             "buildToolsVersion": "34.0.0",
             "compileSdkVersion": 34,
-            "minSdkVersion"    : 21,
+            "minSdkVersion"    : 23,
             "targetSdkVersion" : 34,
             "versionCode"      : 11,
             "versionName"      : "1.1.0"
@@ -41,7 +41,7 @@ ext {
             "facebook_infer"             : 'com.facebook.infer.annotation:infer-annotation:0.18.0',
             //admob https://developers.google.com/admob/android/rel-notes
             //google ad manager https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start
-            "admob"                      : 'com.google.android.gms:play-services-ads:22.4.0',
+            "admob"                      : 'com.google.android.gms:play-services-ads-lite:24.0.0',
             "admob_facebook_adapter"     : 'com.google.ads.mediation:facebook:6.19.0.0',
             //vungle https://github.com/Vungle/Android-SDK/blob/master/CHANGELOG.md
             "vungle"                     : 'com.vungle:publisher-sdk-android:6.12.1',

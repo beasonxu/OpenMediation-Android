@@ -248,7 +248,7 @@ public class NativeRecyclerActivity extends Activity {
                     desc.setText(info.getDesc());
                     Button btn = adView.findViewById(R.id.ad_btn);
                     btn.setText(info.getCallToActionText());
-                    //MediaView mediaView = adView.findViewById(R.id.ad_media);
+                    MediaView mediaView = adView.findViewById(R.id.ad_media);
                     NativeAdView nativeAdView = new NativeAdView(mContext);
                     AdIconView adIconView = adView.findViewById(R.id.ad_icon_media);
                     nativeAdView.addView(adView);
@@ -256,7 +256,7 @@ public class NativeRecyclerActivity extends Activity {
                     nativeAdView.setDescView(desc);
                     nativeAdView.setAdIconView(adIconView);
                     nativeAdView.setCallToActionView(btn);
-                    //nativeAdView.setMediaView(mediaView);
+                    nativeAdView.setMediaView(mediaView);
 
                     NativeAd.registerNativeAdView(placementId, nativeAdView, info);
 

@@ -19,6 +19,8 @@ public class AdBean {
 
     private String mOriData;
     private String mTitle;
+    private String mName;
+
     private List<String> mMainimgUrls;
     private List<String> mLocalImgUrls;
 
@@ -64,6 +66,17 @@ public class AdBean {
 
     public void setTitle(String mTitle) {
         this.mTitle = mTitle;
+    }
+
+    public String getName() {
+        if (mName == null || mName.isEmpty()) {
+            return "open";
+        }
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
     }
 
     public List<String> getMainimgUrl() {
@@ -307,6 +320,7 @@ public class AdBean {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("mOriData", adBean.mOriData);
             jsonObject.put("mTitle", adBean.mTitle);
+            jsonObject.put("mName", adBean.mName);
             jsonObject.put("mMainimgUrls", getArray(adBean.mMainimgUrls));
             jsonObject.put("mLocalImgUrls", getArray(adBean.mLocalImgUrls));
             jsonObject.put("videoBean", AdVideoBean.toJSONObject(adBean.videoBean));
@@ -340,6 +354,7 @@ public class AdBean {
             JSONObject jsonObject = new JSONObject(jsonString);
             adBean.mOriData = jsonObject.optString("mOriData");
             adBean.mTitle = jsonObject.optString("mTitle");
+            adBean.mName = jsonObject.optString("mName");
             adBean.mMainimgUrls = getList(jsonObject.optJSONArray("mMainimgUrls"));
             adBean.mLocalImgUrls = getList(jsonObject.optJSONArray("mLocalImgUrls"));
             adBean.mClktrackers = getList(jsonObject.optJSONArray("mClktrackers"));

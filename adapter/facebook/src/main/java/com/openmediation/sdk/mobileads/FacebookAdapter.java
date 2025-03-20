@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -441,7 +442,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
             }
             NativeAdLayout fbNativeAdLayout = new NativeAdLayout(adView.getContext());
             List<View> views = new ArrayList<>();
-            if (adView.getMediaView() != null) {
+            if (adView.getMediaView() != null && !config.isBannerStyle()) {
                 adView.getMediaView().removeAllViews();
                 views.add(adView.getMediaView());
             }
@@ -465,6 +466,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
 
             if (config.getAdOptionsView() == null) {
                 AdOptionsView adOptionsView = new AdOptionsView(adView.getContext(), config.getNativeAd(), fbNativeAdLayout);
+                adOptionsView.setId(View.generateViewId());
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -474,21 +476,36 @@ public class FacebookAdapter extends CustomAdsAdapter {
             }
             if (config.getSponsoredLabelView() == null) {
                 TextView sponsoredLabelView = new TextView(adView.getContext());
+                sponsoredLabelView.setId(View.generateViewId());
                 sponsoredLabelView.setText(config.getSponsoredText());
-                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
-                sponsoredLabelView.setPadding(0, DensityUtil.dip2px(adView.getContext(), 2),0,DensityUtil.dip2px(adView.getContext(), 2));
+                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                sponsoredLabelView.setAlpha(0.6f);
+                sponsoredLabelView.setGravity(Gravity.CENTER_VERTICAL);
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-                layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
+
+                if (config.getAdOptionsView() != null) {
+                    layoutParams.addRule(RelativeLayout.LEFT_OF, config.getAdOptionsView().getId());
+                    layoutParams.addRule(RelativeLayout.ALIGN_TOP, config.getAdOptionsView().getId());
+                    layoutParams.addRule(RelativeLayout.ALIGN_BOTTOM, config.getAdOptionsView().getId());
+                } else {
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+                }
                 adView.addView(sponsoredLabelView, layoutParams);
                 config.setSponsoredLabelView(sponsoredLabelView);
             }
 
             if (adView.getMediaView() != null) {
-                MediaView mediaView = new MediaView(adView.getContext());
-                adView.getMediaView().addView(mediaView);
-                config.setMediaView(mediaView);
+                if (config.isBannerStyle()) {
+                    adView.getMediaView().setVisibility(View.GONE);
+                } else {
+                    MediaView mediaView = new MediaView(adView.getContext());
+                    adView.getMediaView().addView(mediaView);
+                    config.setMediaView(mediaView);
+                }
+
             }
             if (adView.getAdIconView() != null) {
                 MediaView iconView = new MediaView(adView.getContext());
@@ -535,7 +552,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
     private void initSdk() {
         AdSettings.setIntegrationErrorMode(AdSettings.IntegrationErrorMode.INTEGRATION_ERROR_CALLBACK_MODE);
         if (mDidCallInit.compareAndSet(false, true)) {
-
+            AdSettings.turnOnSDKDebugger(MediationUtil.getContext());
             AudienceNetworkAds.buildInitSettings(MediationUtil.getContext())
                     .withInitListener(new AudienceNetworkAds.InitListener() {
                         @Override
@@ -543,7 +560,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
                             MediationUtil.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (result.isSuccess()) {
+                                    if (result.isSuccess() || (result.getMessage() != null && result.getMessage().equalsIgnoreCase("Sdk successfully initialized!"))) {
                                         mDidInitSuccess = true;
                                         for (InterstitialAdCallback callback : mIsCallbacks.values()) {
                                             callback.onInterstitialAdInitSuccess();
@@ -873,7 +890,7 @@ public class FacebookAdapter extends CustomAdsAdapter {
                 config.setNativeAd(nativeAd);
                 AdnAdInfo info = new AdnAdInfo();
                 info.setAdnNativeAd(config);
-                info.setDesc(nativeAd.getAdSocialContext());
+                info.setDesc(nativeAd.getAdBodyText());
                 info.setType(MediationInfo.MEDIATION_ID_3);
                 info.setCallToActionText(nativeAd.getAdCallToAction());
                 info.setTitle(nativeAd.getAdHeadline());

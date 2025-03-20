@@ -110,7 +110,7 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
             Ad.Builder builder = new Ad.Builder();
             builder.title(mAdBean.getTitle())
                     .description(mAdBean.getDescription())
-                    .cta("install")
+                    .cta(mAdBean.getName())
                     .rawContent(contentFile)
                     .icon(icon);
 
@@ -185,6 +185,8 @@ public final class NativeAdImp extends AbstractAdsManager implements View.OnClic
                 iconImageView.setImageBitmap(mAd.getIcon());
                 iconImageView.getLayoutParams().width = RelativeLayout.LayoutParams.MATCH_PARENT;
                 iconImageView.getLayoutParams().height = RelativeLayout.LayoutParams.MATCH_PARENT;
+            } else {
+                adIconView.setVisibility(View.GONE);
             }
         }
         if (adView.getCallToActionView() != null) {

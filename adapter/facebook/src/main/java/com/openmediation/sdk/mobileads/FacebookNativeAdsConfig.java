@@ -11,6 +11,7 @@ import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAd;
 import com.facebook.ads.NativeAdBase;
+import com.facebook.ads.NativeBannerAd;
 
 public class FacebookNativeAdsConfig {
     private NativeAdBase nativeAd;
@@ -24,6 +25,12 @@ public class FacebookNativeAdsConfig {
         return nativeAd;
     }
 
+    public boolean isBannerStyle() {
+        if (nativeAd != null && nativeAd instanceof NativeBannerAd) {
+            return true;
+        }
+        return false;
+    }
     public void setNativeAd(NativeAdBase nativeAd) {
         this.nativeAd = nativeAd;
     }

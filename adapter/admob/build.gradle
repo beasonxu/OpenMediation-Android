@@ -31,5 +31,5 @@ dependencies {
     implementation project(':om-android-sdk')
     //AdMob
     implementation rootProject.ext.dependencies.admob
-    implementation rootProject.ext.dependencies.admob_facebook_adapter
+    //implementation rootProject.ext.dependencies.admob_facebook_adapter
 }

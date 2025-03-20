@@ -61,7 +61,7 @@ dependencies {
     }
     //AdMob
     implementation rootProject.ext.dependencies.admob
-    implementation rootProject.ext.dependencies.admob_facebook_adapter
+    //implementation rootProject.ext.dependencies.admob_facebook_adapter
     implementation project(path: ':adapter:admob')
 //
 //    // Google Ad Manager ReklamUp

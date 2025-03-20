@@ -66,6 +66,8 @@ import java.util.concurrent.ConcurrentMap;
 
 public class AdMobAdapter extends CustomAdsAdapter {
 
+    private static final String EXTRA_WIDTH = "width";
+    private static final String EXTRA_HEIGHT = "height";
     private final ConcurrentMap<String, RewardedAd> mRewardedAds;
     private final ConcurrentMap<String, InterstitialAd> mInterstitialAds;
     private final ConcurrentMap<String, AdView> mBannerAds;
@@ -666,6 +668,10 @@ public class AdMobAdapter extends CustomAdsAdapter {
                         return;
                     }
                     final AdMobNativeAdsConfig config = new AdMobNativeAdsConfig();
+                    if (extras.containsKey(EXTRA_WIDTH) && extras.containsKey(EXTRA_HEIGHT) && ((Integer)extras.get(EXTRA_HEIGHT) < (Integer)extras.get(EXTRA_WIDTH) / 3)) {
+                        //Use Native Banner
+                        config.setBannerStyle(true);
+                    }
                     AdLoader.Builder builder = new AdLoader.Builder(MediationUtil.getContext(), adUnitId);
                     builder.forNativeAd(new NativeAd.OnNativeAdLoadedListener() {
                         @Override
@@ -756,15 +762,20 @@ public class AdMobAdapter extends CustomAdsAdapter {
                 googleAdView.setCallToActionView(adView.getCallToActionView());
             }
             if (adView.getMediaView() != null) {
-                adView.getMediaView().removeAllViews();
-                com.google.android.gms.ads.nativead.MediaView adMobMediaView = new
-                        com.google.android.gms.ads.nativead.MediaView(adView.getContext());
-                adView.getMediaView().addView(adMobMediaView);
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
-                adMobMediaView.setLayoutParams(layoutParams);
-                googleAdView.setMediaView(adMobMediaView);
+                if (config.isBannerStyle()) {
+                    adView.getMediaView().setVisibility(View.GONE);
+                } else {
+                    adView.getMediaView().removeAllViews();
+                    com.google.android.gms.ads.nativead.MediaView adMobMediaView = new
+                            com.google.android.gms.ads.nativead.MediaView(adView.getContext());
+                    adView.getMediaView().addView(adMobMediaView);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                            RelativeLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
+                    adMobMediaView.setLayoutParams(layoutParams);
+                    googleAdView.setMediaView(adMobMediaView);
+                }
+
             }
 
             if (adView.getAdIconView() != null) {
@@ -787,12 +798,14 @@ public class AdMobAdapter extends CustomAdsAdapter {
                 View actualView = adView.getChildAt(0);
                 TextView sponsoredLabelView = new TextView(actualView.getContext());
                 sponsoredLabelView.setText("Sponsor");
-                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12);
+                sponsoredLabelView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                sponsoredLabelView.setAlpha(0.6f);
                 sponsoredLabelView.setPadding(0, DensityUtil.dip2px(adView.getContext(), 2),0,DensityUtil.dip2px(adView.getContext(), 2));
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
                         RelativeLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
                 layoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+
                 if (actualView instanceof ViewGroup) {
                     ((ViewGroup)actualView).addView(sponsoredLabelView, layoutParams);
                 }

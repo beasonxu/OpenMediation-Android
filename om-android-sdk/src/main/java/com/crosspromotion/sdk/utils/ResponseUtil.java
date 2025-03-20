@@ -48,6 +48,7 @@ public final class ResponseUtil {
         }
         AdBean adBean = new AdBean();
         adBean.setOriData(jsonObject.toString());
+        adBean.setName(jsonObject.optString("name"));
         adBean.setTitle(jsonObject.optString("title"));
         JSONArray imgArray = jsonObject.optJSONArray("imgs");
         if (imgArray != null && imgArray.length() > 0) {
