@@ -139,7 +139,12 @@ public final class ImageUtils {
      */
     public static Bitmap getBitmap(final InputStream is) {
         if (is == null) return null;
-        return BitmapFactory.decodeStream(is);
+        Bitmap ret = BitmapFactory.decodeStream(is);;
+        try {
+            is.close();
+        } catch (IOException e) {
+        }
+        return ret;
     }
 
 
